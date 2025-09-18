@@ -87,6 +87,8 @@ def process_html_content(base_url, content_element):
         strong_texts = [strong.text for strong in code_container.find_all('strong')]
         for strong_tag in code_container.find_all('strong'): strong_tag.unwrap()
         code_text = code_container.get_text()
+        if '<code>' in code_text:
+            code_text = code_text.replace('<code>', '[...]').replace('</code>', '')
         try:
             lexer = guess_lexer(code_text)
             if 'text' in lexer.name.lower(): lexer = TextLexer()

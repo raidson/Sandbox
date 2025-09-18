@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang='pt-BR'><head><meta charset='UTF-8'><title>Manual - Base de Conhecimento</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: #f8f9fa; color: #212529; }
+        .container { max-width: 960px; margin: 20px auto; padding: 30px; background-color: #fff; border: 1px solid #dee2e6; border-radius: 8px; }
+        h1, h2 { color: #0056b3; border-bottom: 2px solid #dee2e6; padding-bottom: 10px; }
+        h1 { text-align: center; }
+        article { margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc; }
+        #indice ul { list-style-type: none; padding-left: 0; }
+        #indice a { text-decoration: none; color: #0056b3; font-size: 1.1em; }
+        #indice a:hover { text-decoration: underline; }
+        img { max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #ddd; }
+        a { color: #0066cc; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; margin-bottom: 20px; }
+        th, td { border: 1px solid #dee2e6; padding: 12px; text-align: left; }
+        th { background-color: #f8f9fa; font-weight: bold; }
+        tr:nth-child(even) { background-color: #f8f9fa; }
+        pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #ffffcc }
+.codehilite { background: #f8f8f8; }
+.codehilite .c { color: #3D7B7B; font-style: italic } /* Comment */
+.codehilite .err { border: 1px solid #F00 } /* Error */
+.codehilite .k { color: #008000; font-weight: bold } /* Keyword */
+.codehilite .o { color: #666 } /* Operator */
+.codehilite .ch { color: #3D7B7B; font-style: italic } /* Comment.Hashbang */
+.codehilite .cm { color: #3D7B7B; font-style: italic } /* Comment.Multiline */
+.codehilite .cp { color: #9C6500 } /* Comment.Preproc */
+.codehilite .cpf { color: #3D7B7B; font-style: italic } /* Comment.PreprocFile */
+.codehilite .c1 { color: #3D7B7B; font-style: italic } /* Comment.Single */
+.codehilite .cs { color: #3D7B7B; font-style: italic } /* Comment.Special */
+.codehilite .gd { color: #A00000 } /* Generic.Deleted */
+.codehilite .ge { font-style: italic } /* Generic.Emph */
+.codehilite .ges { font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #E40000 } /* Generic.Error */
+.codehilite .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #008400 } /* Generic.Inserted */
+.codehilite .go { color: #717171 } /* Generic.Output */
+.codehilite .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #04D } /* Generic.Traceback */
+.codehilite .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.codehilite .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.codehilite .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.codehilite .kp { color: #008000 } /* Keyword.Pseudo */
+.codehilite .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.codehilite .kt { color: #B00040 } /* Keyword.Type */
+.codehilite .m { color: #666 } /* Literal.Number */
+.codehilite .s { color: #BA2121 } /* Literal.String */
+.codehilite .na { color: #687822 } /* Name.Attribute */
+.codehilite .nb { color: #008000 } /* Name.Builtin */
+.codehilite .nc { color: #00F; font-weight: bold } /* Name.Class */
+.codehilite .no { color: #800 } /* Name.Constant */
+.codehilite .nd { color: #A2F } /* Name.Decorator */
+.codehilite .ni { color: #717171; font-weight: bold } /* Name.Entity */
+.codehilite .ne { color: #CB3F38; font-weight: bold } /* Name.Exception */
+.codehilite .nf { color: #00F } /* Name.Function */
+.codehilite .nl { color: #767600 } /* Name.Label */
+.codehilite .nn { color: #00F; font-weight: bold } /* Name.Namespace */
+.codehilite .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.codehilite .nv { color: #19177C } /* Name.Variable */
+.codehilite .ow { color: #A2F; font-weight: bold } /* Operator.Word */
+.codehilite .w { color: #BBB } /* Text.Whitespace */
+.codehilite .mb { color: #666 } /* Literal.Number.Bin */
+.codehilite .mf { color: #666 } /* Literal.Number.Float */
+.codehilite .mh { color: #666 } /* Literal.Number.Hex */
+.codehilite .mi { color: #666 } /* Literal.Number.Integer */
+.codehilite .mo { color: #666 } /* Literal.Number.Oct */
+.codehilite .sa { color: #BA2121 } /* Literal.String.Affix */
+.codehilite .sb { color: #BA2121 } /* Literal.String.Backtick */
+.codehilite .sc { color: #BA2121 } /* Literal.String.Char */
+.codehilite .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.codehilite .s2 { color: #BA2121 } /* Literal.String.Double */
+.codehilite .se { color: #AA5D1F; font-weight: bold } /* Literal.String.Escape */
+.codehilite .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.codehilite .si { color: #A45A77; font-weight: bold } /* Literal.String.Interpol */
+.codehilite .sx { color: #008000 } /* Literal.String.Other */
+.codehilite .sr { color: #A45A77 } /* Literal.String.Regex */
+.codehilite .s1 { color: #BA2121 } /* Literal.String.Single */
+.codehilite .ss { color: #19177C } /* Literal.String.Symbol */
+.codehilite .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #00F } /* Name.Function.Magic */
+.codehilite .vc { color: #19177C } /* Name.Variable.Class */
+.codehilite .vg { color: #19177C } /* Name.Variable.Global */
+.codehilite .vi { color: #19177C } /* Name.Variable.Instance */
+.codehilite .vm { color: #19177C } /* Name.Variable.Magic */
+.codehilite .il { color: #666 } /* Literal.Number.Integer.Long */
+        .codehilite {
+            border: 1px solid #ccc; border-radius: 4px; padding: 10px; overflow-x: auto; margin: 1.5em 0;
+            white-space: pre-wrap; word-break: break-all;
+        }
+        .codehilite strong { font-weight: bold !important; color: #CD0000 !important; }
+    </style>
+    </head><body><div class='container'><h1>Manual - Base de Conhecimento</h1><section id='indice'><h2>Índice</h2><ul><li><a href='#artigo-0'>Base de conhecimento</a></li><li><a href='#artigo-1'>Como a Avalara Brasil pode ajudar?</a></li><li><a href='#artigo-2'>Como realizar o credenciamento de um contribuinte na SEFAZ PR</a></li><li><a href='#artigo-3'>Manual do monitor</a></li><li><a href='#artigo-4'>Rejeição 219: Circulação da NF-e verificada - Como resolver?</a></li><li><a href='#artigo-5'>Rejeição 388: Código de Situação Tributária do IPI incompatível com o Código de Enquadramento Legal do IPI - Como resolver?</a></li><li><a href='#artigo-6'>Rejeição 598: NF-e emitida em ambiente de homologação com Razão Social do destinatário diferente de NF-E EMITIDA EM AMBIENTE DE HOMOLOGAÇÃO - SEM VALOR FISCAL - Como resolver?</a></li><li><a href='#artigo-7'>Rejeição 600: CSOSN incompatível na operação com Não Contribuinte - Como resolver?</a></li><li><a href='#artigo-8'>Rejeição 835: Não informado número da receita do defensivo agrícola - Como resolver?</a></li></ul></section><article id='artigo-0'><h2>Base de conhecimento</h2><p>Conteúdo não encontrado ou vazio.</p></article><article id='artigo-1'><h2>Como a Avalara Brasil pode ajudar?</h2><p>Conteúdo não encontrado ou vazio.</p></article><article id='artigo-2'><h2>Como realizar o credenciamento de um contribuinte na SEFAZ PR</h2><article class="conteudo" itemscope="" itemtype="http://schema.org/Article">
+<h1 class="mt-0 mb-4" itemprop="headline">Como realizar o credenciamento de um contribuinte na SEFAZ PR</h1>
+<div class="d-flex align-items-center mb-4 mb-lg-5 justify-content-between">
+<div class="d-flex lh-1 align-items-center cor-cinza fonteregular fonte-pequena">
+<div class="data-published d-flex align-items-center cor-cinza fonteregular fonte-pequena">
+<time datetime="2025-05-06T16:27:01-03:00" itemprop="datePublished">06/05/2025</time>
+<div class="data-tempo-leitura d-flex align-items-center cor-cinza fonteregular fonte-pequena ms-3">
+                        2 minutos <span class="d-none d-md-inline-flex">de leitura</span> </div>
+</div>
+</div>
+<a class="copy-link ms-2" data-bs-placement="left" data-bs-toggle="tooltip" href="https://oobj.com.br/bc/credenciamento-contribuinte-sefaz-pr/" title="Copiar o link da página"><span class="d-none">Copiar</span></a>
+</div>
+<div class="d-block d-xl-none accordion border border-1 border-cinza-medio bg-cinza-claro rounded-3 p-3 mb-5" id="accordionTC">
+<button aria-controls="nesteArtigo" aria-expanded="true" class="m-0 p-0 lh-1 fs-5 fontesemibold btn-neste-artigo bg-transparente w-100 border-0 collapsed" data-bs-target="#nesteArtigo" data-bs-toggle="collapse">Neste artigo</button>
+<div aria-labelledby="nesteArtigo" class="lista-table-of-contents collapse pt-2" data-bs-parent="#accordionTC" id="nesteArtigo">
+<div class="lista-table-of-contents"><div class="table-of-contents"><ol><li class="tc-h2"><a href="https://oobj.com.br/bc/credenciamento-contribuinte-sefaz-pr/#cadastro-do-contribuinte-e-escolha-do-sistema-emissor">1. Cadastro do contribuinte e escolha do sistema emissor</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/credenciamento-contribuinte-sefaz-pr/#confirmacao-do-credenciamento-pelo-fornecedor-do-sistema">2. Confirmação do credenciamento pelo fornecedor do sistema</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/credenciamento-contribuinte-sefaz-pr/#consideracoes">3. Considerações</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/credenciamento-contribuinte-sefaz-pr/#referencias">4. Referências</a></li></ol></div></div> </div>
+</div>
+<div class="table-of-contents article-content" itemprop="articleBody">
+<p>A Secretaria da Fazenda do Estado do Paraná (SEFAZ PR) exige que o contribuinte se cadastre no ambiente da Receita Estadual e informe o sistema emissor de Documentos Fiscais Eletrônicos (DF-e) que será utilizado.</p>
+<p>Esse procedimento deve ser realizado diretamente pelo contribuinte ou pela empresa responsável pelo sistema de emissão.</p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<h2 class="wp-block-heading" id="cadastro-do-contribuinte-e-escolha-do-sistema-emissor"><a href="https://oobj.com.br/bc/credenciamento-contribuinte-sefaz-pr/#cadastro-do-contribuinte-e-escolha-do-sistema-emissor">Cadastro do contribuinte e escolha do sistema emissor</a></h2>
+<ol class="wp-block-list">
+<li>Acesse o portal da Receita Estadual do Paraná: <a href="https://www.receita.pr.gov.br">https://www.receita.pr.gov.br</a></li>
+<li>No menu <strong>Receita/PR &gt; UPD (Uso de Processamento de Dados)</strong>, localize a opção de <strong>Cadastro de Usuário</strong>.</li>
+<li>Preencha os dados do contribuinte e selecione o sistema emissor que será utilizado.</li>
+</ol>
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<h2 class="wp-block-heading" id="confirmacao-do-credenciamento-pelo-fornecedor-do-sistema"><a href="https://oobj.com.br/bc/credenciamento-contribuinte-sefaz-pr/#confirmacao-do-credenciamento-pelo-fornecedor-do-sistema">Confirmação do credenciamento pelo fornecedor do sistema</a></h2>
+<p>Após o envio da solicitação pelo contribuinte, o fornecedor do sistema emissor precisa acessar o mesmo portal da Receita Estadual para validar e reconhecer a empresa como usuária do sistema.</p>
+<ol class="wp-block-list">
+<li>Acesse o portal da Receita Estadual do Paraná com as credenciais do fornecedor.</li>
+<li>Vá ao menu: <strong>UPD &gt; Sistema &gt; Reconhecimento de Usuário</strong>.</li>
+<li>Utilize o CNPJ do contribuinte para localizar a solicitação de reconhecimento pendente.</li>
+<li>Selecione a empresa e confirme o vínculo.</li>
+</ol>
+<div class="my-4 alert alert-primary" id="alerta-68cafa7917ff5" role="alert">
+<div class="alerta-body p-2">
+<span class="fs-6 text-uppercase fontesemibold m-0 mb-3 p-0 icone-alerta icone-atencao d-flex align-items-center">Atenção</span> <p>Este passo só deve ser realizado se o fornecedor concordar em assumir responsabilidade técnica. Em casos como o do Paraná, recomenda-se que o contribuinte cadastre o ERP ou equipe própria como responsável técnico.</p>
+</div>
+</div>
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<h2 class="wp-block-heading" id="consideracoes"><a href="https://oobj.com.br/bc/credenciamento-contribuinte-sefaz-pr/#consideracoes">Considerações</a></h2>
+<ul class="wp-block-list">
+<li>Estados que adotam o monitoramento fiscal eletrônico (como o SiMFE) podem aplicar penalidades em caso de inconsistências.</li>
+<li>O sistema emissor e o responsável técnico devem estar previamente credenciados para que a autorização dos DF-es funcione corretamente.</li>
+</ul>
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<h2 class="wp-block-heading" id="referencias"><a href="https://oobj.com.br/bc/credenciamento-contribuinte-sefaz-pr/#referencias">Referências</a></h2>
+<div class="wp-block-file"><a href="https://oobj.com.br/bc/wp-content/uploads/2024/09/NORMA-DE-PROCEDIMENTO-FISCAL-N-0632012-SEFAZ-PR.pdf" id="wp-block-file--media-66f08ea7-4b2c-4e61-a0fc-73e3d233e103">NORMA DE PROCEDIMENTO FISCAL N 0632012 (SEFAZ PR)</a><a aria-describedby="wp-block-file--media-66f08ea7-4b2c-4e61-a0fc-73e3d233e103" class="wp-block-file__button wp-element-button" download="" href="https://oobj.com.br/bc/wp-content/uploads/2024/09/NORMA-DE-PROCEDIMENTO-FISCAL-N-0632012-SEFAZ-PR.pdf">Baixar</a></div>
+</hr></div>
+</article></article><article id='artigo-3'><h2>Manual do monitor</h2><p>Conteúdo não encontrado ou vazio.</p></article><article id='artigo-4'><h2>Rejeição 219: Circulação da NF-e verificada - Como resolver?</h2><article class="conteudo" itemscope="" itemtype="http://schema.org/Article">
+<h1 class="mt-0 mb-4" itemprop="headline">Rejeição 219: Circulação da NF-e verificada - Como resolver?</h1>
+<div class="d-flex align-items-center mb-4 mb-lg-5 justify-content-between">
+<div class="d-flex lh-1 align-items-center cor-cinza fonteregular fonte-pequena">
+<div class="data-published d-flex align-items-center cor-cinza fonteregular fonte-pequena">
+<time datetime="2015-06-10T13:07:55-03:00" itemprop="datePublished">10/06/2015</time>
+<div class="data-tempo-leitura d-flex align-items-center cor-cinza fonteregular fonte-pequena ms-3">
+                        2 minutos <span class="d-none d-md-inline-flex">de leitura</span> </div>
+</div>
+</div>
+<a class="copy-link ms-2" data-bs-placement="left" data-bs-toggle="tooltip" href="https://oobj.com.br/bc/rejeicao-219-como-resolver/" title="Copiar o link da página"><span class="d-none">Copiar</span></a>
+</div>
+<div class="d-block d-xl-none accordion border border-1 border-cinza-medio bg-cinza-claro rounded-3 p-3 mb-5" id="accordionTC">
+<button aria-controls="nesteArtigo" aria-expanded="true" class="m-0 p-0 lh-1 fs-5 fontesemibold btn-neste-artigo bg-transparente w-100 border-0 collapsed" data-bs-target="#nesteArtigo" data-bs-toggle="collapse">Neste artigo</button>
+<div aria-labelledby="nesteArtigo" class="lista-table-of-contents collapse pt-2" data-bs-parent="#accordionTC" id="nesteArtigo">
+<div class="lista-table-of-contents"><div class="table-of-contents"><ol><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-219-como-resolver/#exemplo">1. Exemplo</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-219-como-resolver/#regra-de-validacao-da-sefaz">2. Regra de validação da SEFAZ</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-219-como-resolver/#como-resolver">3. Como resolver</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-219-como-resolver/#referencia">4. Referência</a></li></ol></div></div> </div>
+</div>
+<div class="table-of-contents article-content" itemprop="articleBody">
+<p>Quando for emitido um Evento de Cancelamento para uma NFe já registrada em uma barreira fiscal (com Registro de Passagem), será retornado a rejeição “219 – Circulação da NFe verificada”.</p>
+<h2 class="wp-block-heading" id="exemplo"><a href="https://oobj.com.br/bc/rejeicao-219-como-resolver/#exemplo">Exemplo</a></h2>
+<p>Foi emitido um Evento de Cancelamento para uma NFe, que entrou em circulação e foi registrada em uma barreira fiscal, adquirindo do fisco o Evento de Registro de Passagem. Nessa situação, o Evento de Cancelamento será rejeitada pelo motivo 219.</p>
+<div class="wp-block-image">
+<figure class="aligncenter"><img alt="" class="wp-image-4532" decoding="async" src="https://oobj.com.br/bc//wp-content/uploads/2015/06/image-1.png"/></figure></div>
+<h2 class="wp-block-heading" id="regra-de-validacao-da-sefaz"><a href="https://oobj.com.br/bc/rejeicao-219-como-resolver/#regra-de-validacao-da-sefaz">Regra de validação da SEFAZ</a></h2>
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-4529" decoding="async" src="https://oobj.com.br/bc//wp-content/uploads/2015/06/image.png"/></figure>
+<div class="my-4 alert alert-light" id="alerta-68cafa984e091" role="alert">
+<div class="alerta-body p-2">
+<span class="fs-6 text-uppercase fontesemibold m-0 mb-3 p-0 icone-alerta icone-observacao d-flex align-items-center">Observação</span> <div class="info-tpl-header">Observação</div>
+<div class="info-tpl-content">
+
+Sempre que uma mercadoria passar por uma barreira fiscal, a NF-e terá um Registro de Passagem vinculado, logo a NF-e poderá ter mais de um Registro de Passagem.
+
+</div> </div>
+</div>
+<h2 class="wp-block-heading" id="como-resolver"><a href="https://oobj.com.br/bc/rejeicao-219-como-resolver/#como-resolver">Como resolver</a></h2>
+<p>Segundo a Regra de Validação da Sefaz, o Evento de Registro de Passagem, emitido pelo Fisco, também pode ser cancelamento. Nesse caso, pode-se entrar em contato com o Fisco e solicitar o Cancelamento do Registro de Passagem, para em seguida se emitir o Evento de Cancelamento da NFe.</p>
+<div class="wp-block-image">
+<figure class="aligncenter"><img alt="" class="wp-image-4533" decoding="async" src="https://oobj.com.br/bc//wp-content/uploads/2015/06/image-2.png"/></figure></div>
+<p></p>
+<p>Obs.: Os exemplos anexados nesse artigo não representam uma situação real.</p>
+<p>Ao entrar em contato com o Fisco, o mesmo avaliará se é possível o cancelamento do Registro de Passagem com o intuito que o Emitente da NFe consiga realizar o Cancelamento da mesma. Mesmo nesse caso, o prazo para o Cancelamento da NFe continua o mesmo de vigência no Estado do emitente.</p>
+<h2 class="wp-block-heading" id="referencia"><a href="https://oobj.com.br/bc/rejeicao-219-como-resolver/#referencia">Referência</a></h2>
+<div class="wp-block-file"><a href="https://oobj.com.br/bc//wp-content/uploads/2015/11/MOC7-Visao-Geral.pdf" id="wp-block-file--media-99f0c982-683c-4b9f-b232-ee167ebef271">MOC7-Visao-Geral</a><a aria-describedby="wp-block-file--media-99f0c982-683c-4b9f-b232-ee167ebef271" class="wp-block-file__button wp-element-button" download="" href="https://oobj.com.br/bc//wp-content/uploads/2015/11/MOC7-Visao-Geral.pdf">Baixar</a></div>
+</div>
+</article></article><article id='artigo-5'><h2>Rejeição 388: Código de Situação Tributária do IPI incompatível com o Código de Enquadramento Legal do IPI - Como resolver?</h2><article class="conteudo" itemscope="" itemtype="http://schema.org/Article">
+<h1 class="mt-0 mb-4" itemprop="headline">Rejeição 388: Código de Situação Tributária do IPI incompatível com o Código de Enquadramento Legal do IPI - Como resolver?</h1>
+<div class="d-flex align-items-center mb-4 mb-lg-5 justify-content-between">
+<div class="d-flex lh-1 align-items-center cor-cinza fonteregular fonte-pequena">
+<div class="data-published d-flex align-items-center cor-cinza fonteregular fonte-pequena">
+<time datetime="2015-10-05T13:28:06-03:00" itemprop="datePublished">05/10/2015</time>
+<div class="data-tempo-leitura d-flex align-items-center cor-cinza fonteregular fonte-pequena ms-3">
+                        3 minutos <span class="d-none d-md-inline-flex">de leitura</span> </div>
+</div>
+</div>
+<a class="copy-link ms-2" data-bs-placement="left" data-bs-toggle="tooltip" href="https://oobj.com.br/bc/rejeicao-388-como-resolver/" title="Copiar o link da página"><span class="d-none">Copiar</span></a>
+</div>
+<div class="d-block d-xl-none accordion border border-1 border-cinza-medio bg-cinza-claro rounded-3 p-3 mb-5" id="accordionTC">
+<button aria-controls="nesteArtigo" aria-expanded="true" class="m-0 p-0 lh-1 fs-5 fontesemibold btn-neste-artigo bg-transparente w-100 border-0 collapsed" data-bs-target="#nesteArtigo" data-bs-toggle="collapse">Neste artigo</button>
+<div aria-labelledby="nesteArtigo" class="lista-table-of-contents collapse pt-2" data-bs-parent="#accordionTC" id="nesteArtigo">
+<div class="lista-table-of-contents"><div class="table-of-contents"><ol><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-388-como-resolver/#excecoes">1. Exceções</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-388-como-resolver/#exemplo">2. Exemplo</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-388-como-resolver/#regra-de-validacao-da-sefaz">3. Regra de validação da Sefaz:</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-388-como-resolver/#como-resolver">4. Como resolver</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-388-como-resolver/#referencia">5. Referência</a></li></ol></div></div> </div>
+</div>
+<div class="table-of-contents article-content" itemprop="articleBody">
+<p>Quando for emitida uma NFe e o Código de Enquadramento Legal do IPI (cEnq) não for compatível com o CST será retornado a rejeição “388 – Código de Situação Tributária do IPI incompatível com o Código de Enquadramento Legal do IPI”. </p>
+<h2 class="wp-block-heading" id="excecoes"><a href="https://oobj.com.br/bc/rejeicao-388-como-resolver/#excecoes">Exceções</a></h2>
+<ol class="wp-block-list"><li>A regra de validação 388 não se aplica, em produção, para NFe com data de emissão anterior a 01/04/2016.</li>
+</ol>
+<h2 class="wp-block-heading" id="exemplo"><a href="https://oobj.com.br/bc/rejeicao-388-como-resolver/#exemplo">Exemplo</a></h2>
+<p>Foi emitida uma NFe com cEnq igual à “999 – Outros/Tributação normal IPI” e com CST igual à “55 – Saída com suspensão”. Nessa situação a NFe será rejeitada pelo motivo 388.</p>
+<ul class="wp-block-list"><li>No XML: Os campos associados a essa validação são: <cenq> e <cst>, dentro do Grupo <ipi></ipi></cst></cenq></li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="linenos">1</span>[...]IPI&gt;
+<span class="linenos">2</span><span class="w">    </span><span class="nt">&lt;cEnq&gt;</span>999<span class="nt">&lt;/cEnq&gt;</span>
+<span class="linenos">3</span><span class="w">    </span><span class="nt">&lt;IPINT&gt;</span>
+<span class="linenos">4</span><span class="w">        </span><span class="nt">&lt;CST&gt;</span>55<span class="nt">&lt;/CST&gt;</span>
+<span class="linenos">5</span><span class="w">    </span><span class="nt">&lt;/IPINT&gt;</span>
+<span class="linenos">6</span><span class="nt">&lt;/IPI&gt;</span>
+</pre></div>
+
+<ul class="wp-block-list"><li>No TXT-SP:</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="linenos">1</span>[...]O|||||<span class="nt">&lt;strong&gt;</span>999<span class="nt">&lt;/strong&gt;</span>|
+<span class="linenos">2</span>O08|55|
+</pre></div>
+
+<h2 class="wp-block-heading" id="regra-de-validacao-da-sefaz"><a href="https://oobj.com.br/bc/rejeicao-388-como-resolver/#regra-de-validacao-da-sefaz">Regra de validação da Sefaz:</a></h2>
+<figure class="wp-block-table"><table><tbody><tr><td>Campo-Seq</td><td>Modelo</td><td>Regra de Validação</td><td>Aplic.</td><td>Msg</td><td>Efeito</td><td>Descrição Erro</td></tr><tr><td>O09-10</td><td>55</td><td>Verificar compatibilidade entre o CST do IPI e o Código de Enquadramento Legal (cEnq), conforme as regras abaixo:<br/>– CST de Isenção e Código de Enquadramento incompatível<br/>(IPINT/CST=02, 52 e cEnq fora da faixa [301, 399])<br/>– CST de Imunidade e Código de Enquadramento incompatível<br/>(IPINT/CST=04, 54 e cEnq fora da faixa [001, 099])<br/>– CST de Suspensão e Código de Enquadramento incompatível<br/>(IPINT/CST=05, 55 e cEnq fora da faixa [101, 199])<br/>Exceção: A regra de validação não se aplica, em produção, para Nota Fiscal com data de emissão anterior a 01/04/2016. (NT 2015.002)</td><td>Obrig.</td><td>388</td><td>Rej.</td><td>Rejeição: Código de Situação Tributária do IPI incompatível com o Código de Enquadramento Legal do IPI [nItem: nnn]</td></tr></tbody></table><figcaption class="wp-element-caption">MOC 7.0 – Anexo I – Leiaute e Regras de Validação da NFe e da NFCe – O. Item / Tributo: IPI</figcaption></figure>
+<h2 class="wp-block-heading" id="como-resolver"><a href="https://oobj.com.br/bc/rejeicao-388-como-resolver/#como-resolver">Como resolver</a></h2>
+<p>Usando o exemplo anterior, siga os passos para identificar e corrigir a rejeição da NFe:</p>
+<div class="wp-block-group"><div class="wp-block-group__inner-container is-layout-constrained wp-block-group-is-layout-constrained">
+<p>1 – Verifique os campos cEnq e CST preenchido para o IPI de cada produto da NFe:</p>
+<div class="codehilite"><pre><span></span><span class="linenos">1</span>[...]IPI&gt;
+<span class="linenos">2</span><span class="w">    </span><span class="nt">&lt;cEnq&gt;</span>999<span class="nt">&lt;/cEnq&gt;</span>
+<span class="linenos">3</span><span class="w">    </span><span class="nt">&lt;IPINT&gt;</span>
+<span class="linenos">4</span><span class="w">        </span><span class="nt">&lt;CST&gt;</span>55<span class="nt">&lt;/CST&gt;</span>
+<span class="linenos">5</span><span class="w">    </span><span class="nt">&lt;/IPINT&gt;</span>
+<span class="linenos">6</span><span class="nt">&lt;/IPI&gt;</span>
+</pre></div>
+
+<p>2 – Compare esses valores com as regras definidas pela Sefaz:</p>
+</div></div>
+<ul class="wp-block-list"><li>Se CST = “02” ou “52”, informar cEnq com um valor entre “301” e “399”;</li>
+<li>Se CST = “04” ou “54”, informar cEnq com um valor entre “001” e “099”;</li>
+<li>Se CST = “05” ou “55”, informar cEnq com um valor entre “101” e “199”;</li>
+<li>Para os demais casos, informar cEnq com um valor entre “601 a 608” ou “999”.</li>
+</ul>
+<p>3 – No exemplo, cEnq = “999” e CST = “55”. Após análise das regras e os valores, é possível perceber que para o CST “55” é aceito para o campo cEnq apenas valores que estejam entre “101” e “199”. Para saber qual o código deve informar para o cEnq (Código de Enquadramento Legal do IPI) consulte a Nota Técnica 2020.002 – v.1.00 – Publicada em 18/05/2020:</p>
+<div class="wp-block-file"><a href="https://oobj.com.br/bc//wp-content/uploads/2015/10/Nota-Tecnica-2020_002-v1_00.pdf" id="wp-block-file--media-ce4b5666-6a77-487a-b1ee-5c165acad5d0">Nota Técnica 2020_002 v1_00</a><a aria-describedby="wp-block-file--media-ce4b5666-6a77-487a-b1ee-5c165acad5d0" class="wp-block-file__button wp-element-button" download="" href="https://oobj.com.br/bc//wp-content/uploads/2015/10/Nota-Tecnica-2020_002-v1_00.pdf">Baixar</a></div>
+<p>4 – Altere o valor do <strong>cEnq</strong> para que se adeque a regra, mediante identificação do código na tabela acima que corresponda a Operação descrita na NFe.</p>
+<p>Feita a correção, basta reenviar a NFe a partir do seu <a href="http://oobj.com.br/solucoes/oobj-nfe">Software Emissor</a>.</p>
+<p>Para mais informações sobre o Código de Enquadramento Legal do IPI acesse o artigo <a href="https://oobj.com.br/bc/article/o-que-%c3%a9-o-c%c3%b3digo-de-enquadramento-legal-do-ipi-cenq-410.html">O que é o Código de Enquadramento Legal do IPI (cEnq)?</a></p>
+<h2 class="wp-block-heading" id="referencia"><a href="https://oobj.com.br/bc/rejeicao-388-como-resolver/#referencia">Referência</a></h2>
+<div class="wp-block-file"><a href="https://oobj.com.br/bc//wp-content/uploads/2015/10/Nota-Tecnica-2020_002-v1_00.pdf" id="wp-block-file--media-b90a5f6a-55da-44bf-a134-e4ff50be9e88">Nota Técnica 2020_002 v1_00</a><a aria-describedby="wp-block-file--media-b90a5f6a-55da-44bf-a134-e4ff50be9e88" class="wp-block-file__button wp-element-button" download="" href="https://oobj.com.br/bc//wp-content/uploads/2015/10/Nota-Tecnica-2020_002-v1_00.pdf">Baixar</a></div>
+<div class="wp-block-file"><a href="https://oobj.com.br/bc//wp-content/uploads/2024/06/moc7-anexo-i-leiaute-e-rv.pdf" id="wp-block-file--media-53407b92-a3f2-4343-9463-89821d7cd9f4">moc7-anexo-i-leiaute-e-rv</a><a aria-describedby="wp-block-file--media-53407b92-a3f2-4343-9463-89821d7cd9f4" class="wp-block-file__button wp-element-button" download="" href="https://oobj.com.br/bc//wp-content/uploads/2024/06/moc7-anexo-i-leiaute-e-rv.pdf">Baixar</a></div>
+</div>
+</article></article><article id='artigo-6'><h2>Rejeição 598: NF-e emitida em ambiente de homologação com Razão Social do destinatário diferente de NF-E EMITIDA EM AMBIENTE DE HOMOLOGAÇÃO - SEM VALOR FISCAL - Como resolver?</h2><article class="conteudo" itemscope="" itemtype="http://schema.org/Article">
+<h1 class="mt-0 mb-4" itemprop="headline">Rejeição 598: NF-e emitida em ambiente de homologação com Razão Social do destinatário diferente de NF-E EMITIDA EM AMBIENTE DE HOMOLOGAÇÃO - SEM VALOR FISCAL - Como resolver?</h1>
+<div class="d-flex align-items-center mb-4 mb-lg-5 justify-content-between">
+<div class="d-flex lh-1 align-items-center cor-cinza fonteregular fonte-pequena">
+<div class="data-published d-flex align-items-center cor-cinza fonteregular fonte-pequena">
+<time datetime="2025-03-21T15:29:41-03:00" itemprop="datePublished">21/03/2025</time>
+<div class="data-tempo-leitura d-flex align-items-center cor-cinza fonteregular fonte-pequena ms-3">
+                        3 minutos <span class="d-none d-md-inline-flex">de leitura</span> </div>
+</div>
+</div>
+<a class="copy-link ms-2" data-bs-placement="left" data-bs-toggle="tooltip" href="https://oobj.com.br/bc/rejeicao-598-como-resolver/" title="Copiar o link da página"><span class="d-none">Copiar</span></a>
+</div>
+<div class="d-block d-xl-none accordion border border-1 border-cinza-medio bg-cinza-claro rounded-3 p-3 mb-5" id="accordionTC">
+<button aria-controls="nesteArtigo" aria-expanded="true" class="m-0 p-0 lh-1 fs-5 fontesemibold btn-neste-artigo bg-transparente w-100 border-0 collapsed" data-bs-target="#nesteArtigo" data-bs-toggle="collapse">Neste artigo</button>
+<div aria-labelledby="nesteArtigo" class="lista-table-of-contents collapse pt-2" data-bs-parent="#accordionTC" id="nesteArtigo">
+<div class="lista-table-of-contents"><div class="table-of-contents"><ol><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-598-como-resolver/#exemplo-da-rejeicao-598">1. Exemplo da Rejeição 598</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-598-como-resolver/#como-resolver-a-rejeicao-598">2. Como resolver a Rejeição 598</a></li><li class="tc-h3"><a href="https://oobj.com.br/bc/rejeicao-598-como-resolver/#exemplo-de-preenchimento-correto-do-xml">2.1. Exemplo de preenchimento correto do XML</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-598-como-resolver/#regra-de-validacao-da-sefaz">3. Regra de validação da SEFAZ</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-598-como-resolver/#sobre-a-oobj-by-avalara">4. Sobre a Oobj by Avalara</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-598-como-resolver/#referencia">5. Referência</a></li></ol></div></div> </div>
+</div>
+<div class="table-of-contents article-content" itemprop="articleBody">
+<p>A Rejeição 598 é uma das ocorrências comuns durante a emissão de Notas Fiscais Eletrônicas (NF-e) no ambiente de homologação. Essa mensagem de erro ocorre quando a razão social do destinatário na NF-e (tag <code class="EnlighterJSRAW" data-enlighter-language="generic">xNome</code> do destinatário) não está configurada corretamente para o ambiente de testes. </p>
+<p>Neste artigo, a Oobj by Avalara explica o que é a Rejeição 598, apresenta um exemplo prático da situação e mostra como solucionar o problema.</p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<h2 class="wp-block-heading" id="exemplo-da-rejeicao-598"><a href="https://oobj.com.br/bc/rejeicao-598-como-resolver/#exemplo-da-rejeicao-598">Exemplo da Rejeição 598</a></h2>
+<p>Imagine que você está emitindo uma NF-e em ambiente de homologação para testar a integração do seu sistema com o da Secretaria da Fazenda (SEFAZ). No entanto, ao validar a nota, recebe a mensagem de erro: <strong>“NF-e emitida em ambiente de homologação com Razão Social do destinatário diferente de NF-E EMITIDA EM AMBIENTE DE HOMOLOGAÇÃO – SEM VALOR FISCAL”</strong>.</p>
+<p>Esse erro ocorre porque, em ambiente de testes, a razão social do destinatário deve estar configurada exatamente como especificado pela SEFAZ: <strong>NF-E EMITIDA EM AMBIENTE DE HOMOLOGAÇÃO – SEM VALOR FISCAL</strong>. Qualquer divergência impede a validação correta.</p>
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<h2 class="wp-block-heading" id="como-resolver-a-rejeicao-598"><a href="https://oobj.com.br/bc/rejeicao-598-como-resolver/#como-resolver-a-rejeicao-598">Como resolver a Rejeição 598</a></h2>
+<p>Para corrigir essa rejeição, siga as seguintes etapas:</p>
+<ol class="wp-block-list" start="1">
+<li><strong>Verifique o ambiente de emissão:</strong> certifique-se de que está realmente no ambiente de homologação e não no ambiente de produção.</li>
+<li><strong>Revise a razão social do destinatário:</strong> a razão social deve estar exatamente como especificado: <strong>NF-E EMITIDA EM AMBIENTE DE HOMOLOGAÇÃO – SEM VALOR FISCAL</strong>. Lembre-se de usar letras maiúsculas e respeitar espaços.</li>
+<li><strong>Ajuste o sistema emissor:</strong> se necessário, ajuste seu sistema de emissão de NF-e para garantir que a razão social esteja correta ao emitir notas em ambiente de homologação.</li>
+<li><strong>Reemita a NF-e:</strong> após realizar os ajustes, faça uma nova tentativa de emissão para verificar se o problema foi resolvido.</li>
+</ol>
+<h3 class="wp-block-heading" id="exemplo-de-preenchimento-correto-do-xml"><a href="https://oobj.com.br/bc/rejeicao-598-como-resolver/#exemplo-de-preenchimento-correto-do-xml">Exemplo de preenchimento correto do XML </a></h3>
+<div class="codehilite"><pre><span></span><span class="linenos"> 1</span><span class="k">[...]</span>
+<span class="linenos"> 2</span><span class="na">&lt;dest&gt;</span>
+<span class="linenos"> 3</span><span class="w">  </span><span class="na">&lt;CNPJ&gt;07385111000102&lt;/CNPJ&gt;</span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="na">&lt;xNome&gt;NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL&lt;/xNome&gt;</span>
+<span class="linenos"> 5</span><span class="w">  </span><span class="na">&lt;enderDest&gt;</span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="na">&lt;xLgr&gt;AV. FRANÇA&lt;/xLgr&gt;</span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="na">&lt;nro&gt;1162&lt;/nro&gt;</span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="na">&lt;xBairro&gt;NAVEGANTES&lt;/xBairro&gt;</span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="na">&lt;cMun&gt;4314902&lt;/cMun&gt;</span>
+<span class="linenos">10</span><span class="w">    </span><span class="na">&lt;xMun&gt;PORTO ALEGRE&lt;/xMun&gt;</span>
+<span class="linenos">11</span><span class="w">    </span><span class="na">&lt;UF&gt;RS&lt;/UF&gt;</span>
+<span class="linenos">12</span><span class="w">    </span><span class="na">&lt;CEP&gt;44096486&lt;/CEP&gt;</span>
+<span class="linenos">13</span><span class="w">    </span><span class="na">&lt;cPais&gt;1058&lt;/cPais&gt;</span>
+<span class="linenos">14</span><span class="w">    </span><span class="na">&lt;xPais&gt;BRASIL&lt;/xPais&gt;</span>
+<span class="linenos">15</span><span class="w">    </span><span class="na">&lt;fone&gt;7536230233&lt;/fone&gt;</span>
+<span class="linenos">16</span><span class="w">  </span><span class="na">&lt;/enderDest&gt;</span>
+<span class="linenos">17</span><span class="w">  </span><span class="na">&lt;indIEDest&gt;1&lt;/indIEDest&gt;</span>
+<span class="linenos">18</span><span class="w">  </span><span class="na">&lt;IE&gt;0963233556&lt;/IE&gt;</span>
+<span class="linenos">19</span><span class="w">  </span><span class="na">&lt;IM&gt;InsMun&lt;/IM&gt;</span>
+<span class="linenos">20</span><span class="na">&lt;/dest&gt;</span>
+<span class="linenos">21</span><span class="k">[...]</span>
+</pre></div>
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<h2 class="wp-block-heading" id="regra-de-validacao-da-sefaz"><a href="https://oobj.com.br/bc/rejeicao-598-como-resolver/#regra-de-validacao-da-sefaz">Regra de validação da SEFAZ</a></h2>
+<figure class="wp-block-table"><table><thead><tr><th>#</th><th>Regra de Validação</th><th>Aplic.</th><th>cStat</th><th>Efeito</th><th>Mensagem</th></tr></thead><tbody><tr><td>E04-20</td><td>Se tag:tpAmb (id:B24) = 2: O xNome (E04) deve ser informado com a literal “NF-E EMITIDA EM AMBIENTE DE HOMOLOGAÇÃO – SEM VALOR FISCAL” (NT 2011/002)<br/><strong>Exceção</strong>: Não se aplica para TpEmis = 3-NFF (NT 2021.002)</td><td>Obrig.</td><td>598</td><td>Rej.</td><td>Rejeição: NF-e emitida em ambiente de homologação com Razão Social do destinatário diferente de NF-E EMITIDA EM AMBIENTE DE HOMOLOGAÇÃO – SEM VALOR FISCAL</td></tr></tbody></table><figcaption class="wp-element-caption">Nota Técnica 2021.002 – Adequações para Nota Fiscal Fácil (Grupo E: Identificação do Destinatário (regra E04-20))</figcaption></figure>
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<h2 class="wp-block-heading" id="sobre-a-oobj-by-avalara"><a href="https://oobj.com.br/bc/rejeicao-598-como-resolver/#sobre-a-oobj-by-avalara">Sobre a Oobj by Avalara</a></h2>
+<p>Emissão, recebimento e gestão de documentos fiscais em um único lugar, com alta capacidade de processamento.</p>
+<p>Conheça agora nossas soluções para tornar o dia a dia fiscal produtivo e seguro:</p>
+<div class="wp-block-buttons is-content-justification-center is-layout-flex wp-container-core-buttons-is-layout-1 wp-block-buttons-is-layout-flex">
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="https://oobj.com.br/solucoes/?ref=BC">Saiba mais</a></div>
+</div>
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<h2 class="wp-block-heading" id="referencia"><a href="https://oobj.com.br/bc/rejeicao-598-como-resolver/#referencia">Referência</a></h2>
+<div class="wp-block-file"><a href="https://oobj.com.br/bc/wp-content/uploads/2025/03/NT2021.002-v1.12-Nota-Fiscal-Facil.pdf" id="wp-block-file--media-e0b07d58-2c05-47f0-a81d-ea80a7e5020a" rel="noreferrer noopener" target="_blank">NT2021.002 v1.12 Nota Fiscal Fácil</a><a aria-describedby="wp-block-file--media-e0b07d58-2c05-47f0-a81d-ea80a7e5020a" class="wp-block-file__button wp-element-button" download="" href="https://oobj.com.br/bc/wp-content/uploads/2025/03/NT2021.002-v1.12-Nota-Fiscal-Facil.pdf">Baixar</a></div>
+</hr></div>
+</article></article><article id='artigo-7'><h2>Rejeição 600: CSOSN incompatível na operação com Não Contribuinte - Como resolver?</h2><article class="conteudo" itemscope="" itemtype="http://schema.org/Article">
+<h1 class="mt-0 mb-4" itemprop="headline">Rejeição 600: CSOSN incompatível na operação com Não Contribuinte - Como resolver?</h1>
+<div class="d-flex align-items-center mb-4 mb-lg-5 justify-content-between">
+<div class="d-flex lh-1 align-items-center cor-cinza fonteregular fonte-pequena">
+<div class="data-published d-flex align-items-center cor-cinza fonteregular fonte-pequena">
+<time datetime="2015-11-17T09:17:56-02:00" itemprop="datePublished">17/11/2015</time>
+<div class="data-tempo-leitura d-flex align-items-center cor-cinza fonteregular fonte-pequena ms-3">
+                        6 minutos <span class="d-none d-md-inline-flex">de leitura</span> </div>
+</div>
+</div>
+<a class="copy-link ms-2" data-bs-placement="left" data-bs-toggle="tooltip" href="https://oobj.com.br/bc/rejeicao-600-como-resolver/" title="Copiar o link da página"><span class="d-none">Copiar</span></a>
+</div>
+<div class="d-block d-xl-none accordion border border-1 border-cinza-medio bg-cinza-claro rounded-3 p-3 mb-5" id="accordionTC">
+<button aria-controls="nesteArtigo" aria-expanded="true" class="m-0 p-0 lh-1 fs-5 fontesemibold btn-neste-artigo bg-transparente w-100 border-0 collapsed" data-bs-target="#nesteArtigo" data-bs-toggle="collapse">Neste artigo</button>
+<div aria-labelledby="nesteArtigo" class="lista-table-of-contents collapse pt-2" data-bs-parent="#accordionTC" id="nesteArtigo">
+<div class="lista-table-of-contents"><div class="table-of-contents"><ol><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-600-como-resolver/#excecoes-a-regra">1. Exceções à regra</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-600-como-resolver/#exemplo">2. Exemplo</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-600-como-resolver/#regra-de-validacao-da-sefaz">3. Regra de validação da Sefaz</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-600-como-resolver/#como-resolver">4. Como resolver</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-600-como-resolver/#referencia">5. Referência</a></li></ol></div></div> </div>
+</div>
+<div class="table-of-contents article-content" itemprop="articleBody">
+<p>Quando for emitida uma NFe para Destinatário Não Contribuinte do ICMS (indIEDest = 9) e com o Código de Situação da Operação – Simples Nacional (CSOSN) diferente da relação abaixo, será retornado a rejeição “600 – CSOSN incompatível na operação com Não Contribuinte”:</p>
+<ul class="wp-block-list"><li><strong>102 </strong> – Tributação SN sem permissão de crédito;</li>
+<li><strong>103 </strong> – Tributação SN, com isenção para faixa de receita bruta;</li>
+<li><strong>300</strong> – Imune;</li>
+<li><strong>400 </strong> – Não tributada pelo Simples Nacional;</li>
+<li><strong>500 </strong> – ICMS cobrado anteriormente por substituição tributária ou por antecipação.</li>
+</ul>
+<h2 class="wp-block-heading" id="excecoes-a-regra"><a href="https://oobj.com.br/bc/rejeicao-600-como-resolver/#excecoes-a-regra">Exceções à regra</a></h2>
+<ol class="wp-block-list"><li>A regra de validação 600 não se aplica para NFe de entrada (tpNF = 0);</li>
+<li>A regra de validação 600 não se aplica nas operações com CFOP de conserto ou reparo (CFOP 5915, 5916, 6915 e 6916) ou de remessa para demonstração dentro do Estado (CFOP 5912 e 5913);</li>
+<li>A regra de validação 600 não se aplica, em produção, para NFe com data de emissão anterior a 01/07/2016.</li>
+</ol>
+<h2 class="wp-block-heading" id="exemplo"><a href="https://oobj.com.br/bc/rejeicao-600-como-resolver/#exemplo">Exemplo</a></h2>
+<p>Foi emitida uma NFe por um Contribuinte do Regime Simples Nacional, para um Destinatário Não Contribuinte (indIEDest = 9) do ICMS, com CSOSN igual a “900 – Outros”. Nessa situação, a NFe será rejeitada pelo motivo 600.</p>
+<ul class="wp-block-list"><li>No XML:</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="linenos"> 1</span>[...]dest&gt;
+<span class="linenos"> 2</span><span class="w">    </span><span class="nt">&lt;CNPJ&gt;</span>99999999000191<span class="nt">&lt;/CNPJ&gt;</span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="nt">&lt;xNome&gt;</span>NF-E<span class="w"> </span>EMITIDA<span class="w"> </span>EM<span class="w"> </span>AMBIENTE<span class="w"> </span>DE<span class="w"> </span>HOMOLOGACAO<span class="w"> </span>-<span class="w"> </span>SEM<span class="w"> </span>VALOR<span class="w"> </span>FISCAL<span class="nt">&lt;/xNome&gt;</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="nt">&lt;enderDest&gt;</span>
+<span class="linenos"> 5</span><span class="w">        </span><span class="nt">&lt;xLgr&gt;</span>PROF<span class="w"> </span>ALGACYR<span class="w"> </span>MUNHOZ<span class="w"> </span>MADER<span class="nt">&lt;/xLgr&gt;</span>
+<span class="linenos"> 6</span><span class="w">        </span><span class="nt">&lt;nro&gt;</span>2800<span class="nt">&lt;/nro&gt;</span>
+<span class="linenos"> 7</span><span class="w">        </span><span class="nt">&lt;xBairro&gt;</span>CIC<span class="nt">&lt;/xBairro&gt;</span>
+<span class="linenos"> 8</span><span class="w">        </span><span class="nt">&lt;cMun&gt;</span>4314902<span class="nt">&lt;/cMun&gt;</span>
+<span class="linenos"> 9</span><span class="w">        </span><span class="nt">&lt;xMun&gt;</span>Porto<span class="w"> </span>Alegre<span class="nt">&lt;/xMun&gt;</span>
+<span class="linenos">10</span><span class="w">        </span><span class="nt">&lt;UF&gt;</span>RS<span class="nt">&lt;/UF&gt;</span>
+<span class="linenos">11</span><span class="w">        </span><span class="nt">&lt;CEP&gt;</span>81310020<span class="nt">&lt;/CEP&gt;</span>
+<span class="linenos">12</span><span class="w">        </span><span class="nt">&lt;cPais&gt;</span>1058<span class="nt">&lt;/cPais&gt;</span>
+<span class="linenos">13</span><span class="w">        </span><span class="nt">&lt;xPais&gt;</span>BRASIL<span class="nt">&lt;/xPais&gt;</span>
+<span class="linenos">14</span><span class="w">    </span><span class="nt">&lt;/enderDest&gt;</span>
+<span class="linenos">15</span><span class="w">    </span><span class="nt">&lt;indIEDest&gt;</span>9<span class="nt">&lt;/indIEDest&gt;</span>
+<span class="linenos">16</span><span class="nt">&lt;/dest&gt;</span>
+<span class="linenos">17</span><span class="nt">&lt;det</span><span class="w"> </span><span class="na">nItem=</span><span class="s">"1"</span><span class="nt">&gt;</span>
+<span class="linenos">18</span><span class="w">    </span><span class="nt">&lt;prod&gt;</span>
+<span class="linenos">19</span><span class="w">        </span><span class="nt">&lt;cProd&gt;</span>7063<span class="nt">&lt;/cProd&gt;</span>
+<span class="linenos">20</span><span class="w">        </span><span class="nt">&lt;cEAN/&gt;</span>
+<span class="linenos">21</span><span class="w">        </span><span class="nt">&lt;xProd&gt;</span>Soluções<span class="w"> </span>Oobj<span class="nt">&lt;/xProd&gt;</span>
+<span class="linenos">22</span><span class="w">        </span><span class="nt">&lt;NCM&gt;</span>90041000<span class="nt">&lt;/NCM&gt;</span>
+<span class="linenos">23</span><span class="w">        </span><span class="nt">&lt;CFOP&gt;</span>5101<span class="nt">&lt;/CFOP&gt;</span>
+<span class="linenos">24</span><span class="w">        </span><span class="nt">&lt;uCom&gt;</span>UND<span class="nt">&lt;/uCom&gt;</span>
+<span class="linenos">25</span><span class="w">        </span><span class="nt">&lt;qCom&gt;</span>1.0000<span class="nt">&lt;/qCom&gt;</span>
+<span class="linenos">26</span><span class="w">        </span><span class="nt">&lt;vUnCom&gt;</span>474.0000000000<span class="nt">&lt;/vUnCom&gt;</span>
+<span class="linenos">27</span><span class="w">        </span><span class="nt">&lt;vProd&gt;</span>474.00<span class="nt">&lt;/vProd&gt;</span>
+<span class="linenos">28</span><span class="w">        </span><span class="nt">&lt;cEANTrib/&gt;</span>
+<span class="linenos">29</span><span class="w">        </span><span class="nt">&lt;uTrib&gt;</span>UND<span class="nt">&lt;/uTrib&gt;</span>
+<span class="linenos">30</span><span class="w">        </span><span class="nt">&lt;qTrib&gt;</span>1.0000<span class="nt">&lt;/qTrib&gt;</span>
+<span class="linenos">31</span><span class="w">        </span><span class="nt">&lt;vUnTrib&gt;</span>474.0000000000<span class="nt">&lt;/vUnTrib&gt;</span>
+<span class="linenos">32</span><span class="w">        </span><span class="nt">&lt;indTot&gt;</span>1<span class="nt">&lt;/indTot&gt;</span>
+<span class="linenos">33</span><span class="w">    </span><span class="nt">&lt;/prod&gt;</span>
+<span class="linenos">34</span><span class="w">    </span><span class="nt">&lt;imposto&gt;</span>
+<span class="linenos">35</span><span class="w">        </span><span class="nt">&lt;ICMS&gt;</span>
+<span class="linenos">36</span><span class="w">            </span><span class="nt">&lt;ICMSSN900&gt;</span>
+<span class="linenos">37</span><span class="w">                </span><span class="nt">&lt;orig&gt;</span>0<span class="nt">&lt;/orig&gt;</span>
+<span class="linenos">38</span><span class="w">                </span><span class="nt">&lt;CSOSN&gt;</span>900<span class="nt">&lt;/CSOSN&gt;</span>
+<span class="linenos">39</span><span class="w">                </span><span class="nt">&lt;modBC&gt;</span>3<span class="nt">&lt;/modBC&gt;</span>
+<span class="linenos">40</span><span class="w">                </span><span class="nt">&lt;vBC&gt;</span>0.00<span class="nt">&lt;/vBC&gt;</span>
+<span class="linenos">41</span><span class="w">                </span><span class="nt">&lt;pICMS&gt;</span>0.00<span class="nt">&lt;/pICMS&gt;</span>
+<span class="linenos">42</span><span class="w">                </span><span class="nt">&lt;vICMS&gt;</span>0.00<span class="nt">&lt;/vICMS&gt;</span>
+<span class="linenos">43</span><span class="w">                </span><span class="nt">&lt;pCredSN&gt;</span>0.00<span class="nt">&lt;/pCredSN&gt;</span>
+<span class="linenos">44</span><span class="w">                </span><span class="nt">&lt;vCredICMSSN&gt;</span>0.00<span class="nt">&lt;/vCredICMSSN&gt;</span>
+<span class="linenos">45</span><span class="w">            </span><span class="nt">&lt;/ICMSSN900&gt;</span>
+<span class="linenos">46</span><span class="w">        </span><span class="nt">&lt;/ICMS&gt;</span>
+<span class="linenos">47</span><span class="w">        </span><span class="nt">&lt;PIS&gt;</span>
+<span class="linenos">48</span><span class="w">            </span><span class="nt">&lt;PISAliq&gt;</span>
+<span class="linenos">49</span><span class="w">                </span><span class="nt">&lt;CST&gt;</span>01<span class="nt">&lt;/CST&gt;</span>
+<span class="linenos">50</span><span class="w">                </span><span class="nt">&lt;vBC&gt;</span>0.00<span class="nt">&lt;/vBC&gt;</span>
+<span class="linenos">51</span><span class="w">                </span><span class="nt">&lt;pPIS&gt;</span>0.00<span class="nt">&lt;/pPIS&gt;</span>
+<span class="linenos">52</span><span class="w">                </span><span class="nt">&lt;vPIS&gt;</span>0.00<span class="nt">&lt;/vPIS&gt;</span>
+<span class="linenos">53</span><span class="w">            </span><span class="nt">&lt;/PISAliq&gt;</span>
+<span class="linenos">54</span><span class="w">        </span><span class="nt">&lt;/PIS&gt;</span>
+<span class="linenos">55</span><span class="w">        </span><span class="nt">&lt;COFINS&gt;</span>
+<span class="linenos">56</span><span class="w">            </span><span class="nt">&lt;COFINSAliq&gt;</span>
+<span class="linenos">57</span><span class="w">                </span><span class="nt">&lt;CST&gt;</span>01<span class="nt">&lt;/CST&gt;</span>
+<span class="linenos">58</span><span class="w">                </span><span class="nt">&lt;vBC&gt;</span>0.00<span class="nt">&lt;/vBC&gt;</span>
+<span class="linenos">59</span><span class="w">                </span><span class="nt">&lt;pCOFINS&gt;</span>0.00<span class="nt">&lt;/pCOFINS&gt;</span>
+<span class="linenos">60</span><span class="w">                </span><span class="nt">&lt;vCOFINS&gt;</span>0.00<span class="nt">&lt;/vCOFINS&gt;</span>
+<span class="linenos">61</span><span class="w">            </span><span class="nt">&lt;/COFINSAliq&gt;</span>
+<span class="linenos">62</span><span class="w">        </span><span class="nt">&lt;/COFINS&gt;</span>
+<span class="linenos">63</span><span class="w">    </span><span class="nt">&lt;/imposto&gt;</span>
+<span class="linenos">64</span><span class="nt">&lt;/det&gt;</span>
+</pre></div>
+
+<ul class="wp-block-list"><li>No TXT-SP:</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="linenos"> 1</span>[...]E|NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL|9|||||
+<span class="linenos"> 2</span>E02|99999999000191|
+<span class="linenos"> 3</span>E05|PROF ALGACYR MUNHOZ MADER|2800||CIC|4314902|Porto Alegre|RS|81310020|1058|BRASIL||
+<span class="linenos"> 4</span>H|1||
+<span class="linenos"> 5</span>I|7063||Soluções Oobj|90041000|||5101|UND|1.0000|474.0000000000|474.00||UND|1.0000|474.0000000000|||||1||||
+<span class="linenos"> 6</span>M|
+<span class="linenos"> 7</span>N|
+<span class="linenos"> 8</span>N10h|0|900|3|0.00||0.00|0.00|||||||0.00|0.00|
+<span class="linenos"> 9</span>Q|
+<span class="linenos">10</span>Q02|01|0.00|0.00|0.00|
+<span class="linenos">11</span>S|
+<span class="linenos">12</span>S02|01|0.00|0.00|0.00|
+</pre></div>
+
+<h2 class="wp-block-heading" id="regra-de-validacao-da-sefaz"><a href="https://oobj.com.br/bc/rejeicao-600-como-resolver/#regra-de-validacao-da-sefaz">Regra de validação da Sefaz </a></h2>
+<figure class="wp-block-table"><table><tbody><tr><td>Campo-Seq</td><td>Modelo</td><td>Regra de Validação</td><td>Aplic.</td><td>Msg</td><td>Efeito</td><td>Descrição Erro</td></tr><tr><td>N12a-70</td><td>55</td><td>Operação com Não Contribuinte (indIEDest=9) e CSOSN difere da<br/>relação abaixo:<br/>102-Tributação SN sem permissão de crédito;<br/>103-Tributação SN, com isenção para faixa de receita bruta;<br/>300-Imune;<br/>400-Não tributada pelo Simples Nacional;<br/>500-ICMS cobrado anteriormente por substituição tributária ou por antecipação;<br/>Exceção 1: A regra de validação acima não se aplica para NFe de entrada (tpNF=0-Entrada).<br/>Exceção 2: A regra de validação acima não se aplica nas operações com CFOP de conserto ou reparo (CFOP 5915, 5916, 6915 e 6916) ou de remessa para demonstração dentro do Estado (CFOP 5912 e 5913).<br/>Exceção 3: A regra de validação não se aplica, em produção, para Nota Fiscal com data de emissão anterior a 01/07/2016. (NT 2015.003)</td><td>Obrig.</td><td>600</td><td>Rej.</td><td>Rejeição: CSOSN incompatível na operação com Não Contribuinte [nItem: 999]</td></tr></tbody></table><figcaption class="wp-element-caption">MOC 7.0 – Anexo I – Leiaute e Regras de Validação da NFe e da NFCe – N. Item / Tributo: ICMS</figcaption></figure>
+<h2 class="wp-block-heading" id="como-resolver"><a href="https://oobj.com.br/bc/rejeicao-600-como-resolver/#como-resolver">Como resolver</a></h2>
+<p>Deve-se, sempre que o emissor da NFe estiver sobre o Regime de Tributação Simples Nacional, com Destinatário Não Contribuinte do ICMS (indIEDest = 9) utilizar os CSOSN de ICMS previstos na regra de validação da Sefaz, que são 102, 103, 300, 400 e 500.</p>
+<p>É necessário confirmar se o Destinatário realmente é Não Contribuinte (indIEDest = 9). Se como informado, o Destinatário for Não Contribuinte, será necessário modificar a tributação do ICMS, escolhendo um dos CSOSN permitidos para esse caso. Para realizar essa verificação, consulte o CNPJ do Destinatário no <a href="https://oobj.com.br/bc/article/como-consultar-inscri%c3%a7%c3%a3o-estadual-ie-no-sintegra-78.html">SINTEGRA</a> ou no <a href="https://oobj.com.br/bc/article/como-consultar-uma-inscri%c3%a7%c3%a3o-estadual-ou-cnpj-no-cadastro-centralizado-de-contribuinte-ccc-252.html">Cadastro Centralizado de Contribuintes</a>.</p>
+<p>Se após a verificação do cadastro do Destinatário no SINTEGRA ou no CCC for confirmado que ele é Contribuinte (indIEDest = 1), deve-se modificar a indicação da IE do Destinatário e adicionar sua IE.</p>
+<p>No exemplo, consideramos que o Destinatário é Contribuinte e mantivemos as informações dos impostos. Veja a seguir o exemplo corrigido:</p>
+<ul class="wp-block-list"><li>No XML:</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="linenos"> 1</span>[...]dest&gt;
+<span class="linenos"> 2</span><span class="w">    </span><span class="nt">&lt;CNPJ&gt;</span>99999999000191<span class="nt">&lt;/CNPJ&gt;</span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="nt">&lt;xNome&gt;</span>NF-E<span class="w"> </span>EMITIDA<span class="w"> </span>EM<span class="w"> </span>AMBIENTE<span class="w"> </span>DE<span class="w"> </span>HOMOLOGACAO<span class="w"> </span>-<span class="w"> </span>SEM<span class="w"> </span>VALOR<span class="w"> </span>FISCAL<span class="nt">&lt;/xNome&gt;</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="nt">&lt;enderDest&gt;</span>
+<span class="linenos"> 5</span><span class="w">        </span><span class="nt">&lt;xLgr&gt;</span>PROF<span class="w"> </span>ALGACYR<span class="w"> </span>MUNHOZ<span class="w"> </span>MADER<span class="nt">&lt;/xLgr&gt;</span>
+<span class="linenos"> 6</span><span class="w">        </span><span class="nt">&lt;nro&gt;</span>2800<span class="nt">&lt;/nro&gt;</span>
+<span class="linenos"> 7</span><span class="w">        </span><span class="nt">&lt;xBairro&gt;</span>CIC<span class="nt">&lt;/xBairro&gt;</span>
+<span class="linenos"> 8</span><span class="w">        </span><span class="nt">&lt;cMun&gt;</span>4314902<span class="nt">&lt;/cMun&gt;</span>
+<span class="linenos"> 9</span><span class="w">        </span><span class="nt">&lt;xMun&gt;</span>Porto<span class="w"> </span>Alegre<span class="nt">&lt;/xMun&gt;</span>
+<span class="linenos">10</span><span class="w">        </span><span class="nt">&lt;UF&gt;</span>RS<span class="nt">&lt;/UF&gt;</span>
+<span class="linenos">11</span><span class="w">        </span><span class="nt">&lt;CEP&gt;</span>81310020<span class="nt">&lt;/CEP&gt;</span>
+<span class="linenos">12</span><span class="w">        </span><span class="nt">&lt;cPais&gt;</span>1058<span class="nt">&lt;/cPais&gt;</span>
+<span class="linenos">13</span><span class="w">        </span><span class="nt">&lt;xPais&gt;</span>BRASIL<span class="nt">&lt;/xPais&gt;</span>
+<span class="linenos">14</span><span class="w">    </span><span class="nt">&lt;/enderDest&gt;</span>
+<span class="linenos">15</span><span class="w">    </span><span class="nt">&lt;indIEDest&gt;</span>1<span class="nt">&lt;/indIEDest&gt;</span>
+<span class="linenos">16</span><span class="w">    </span><span class="nt">&lt;IE&gt;</span>2585474407<span class="nt">&lt;/IE&gt;</span>
+<span class="linenos">17</span><span class="nt">&lt;/dest&gt;</span>
+</pre></div>
+
+<ul class="wp-block-list"><li>No TXT-SP:</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="linenos">1</span>[...]E|NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL|1|2585474407||||
+<span class="linenos">2</span>E02|99999999000191|
+<span class="linenos">3</span>E05|PROF ALGACYR MUNHOZ MADER|2800||CIC|4314902|Porto Alegre|RS|81310020|1058|BRASIL||
+</pre></div>
+
+<p>Feita as correções, basta reenviar a NFe para processamento.</p>
+<h2 class="wp-block-heading" id="referencia"><a href="https://oobj.com.br/bc/rejeicao-600-como-resolver/#referencia">Referência</a></h2>
+<div class="wp-block-file"><a href="http://bc.novooobj.xyz/wp-content/uploads/2024/06/moc7-anexo-i-leiaute-e-rv.pdf" id="wp-block-file--media-073ae517-5eae-4688-b822-b9b97be6be35">moc7-anexo-i-leiaute-e-rv-1</a><a aria-describedby="wp-block-file--media-073ae517-5eae-4688-b822-b9b97be6be35" class="wp-block-file__button wp-element-button" download="" href="http://bc.novooobj.xyz/wp-content/uploads/2024/06/moc7-anexo-i-leiaute-e-rv.pdf">Baixar</a></div>
+</div>
+</article></article><article id='artigo-8'><h2>Rejeição 835: Não informado número da receita do defensivo agrícola - Como resolver?</h2><article class="conteudo" itemscope="" itemtype="http://schema.org/Article">
+<h1 class="mt-0 mb-4" itemprop="headline">Rejeição 835: Não informado número da receita do defensivo agrícola - Como resolver?</h1>
+<div class="d-flex align-items-center mb-4 mb-lg-5 justify-content-between">
+<div class="d-flex lh-1 align-items-center cor-cinza fonteregular fonte-pequena">
+<div class="data-published d-flex align-items-center cor-cinza fonteregular fonte-pequena">
+<time datetime="2025-05-15T12:32:09-03:00" itemprop="datePublished">15/05/2025</time>
+<div class="data-tempo-leitura d-flex align-items-center cor-cinza fonteregular fonte-pequena ms-3">
+                        2 minutos <span class="d-none d-md-inline-flex">de leitura</span> </div>
+</div>
+</div>
+<a class="copy-link ms-2" data-bs-placement="left" data-bs-toggle="tooltip" href="https://oobj.com.br/bc/rejeicao-835-como-resolver/" title="Copiar o link da página"><span class="d-none">Copiar</span></a>
+</div>
+<div class="d-block d-xl-none accordion border border-1 border-cinza-medio bg-cinza-claro rounded-3 p-3 mb-5" id="accordionTC">
+<button aria-controls="nesteArtigo" aria-expanded="true" class="m-0 p-0 lh-1 fs-5 fontesemibold btn-neste-artigo bg-transparente w-100 border-0 collapsed" data-bs-target="#nesteArtigo" data-bs-toggle="collapse">Neste artigo</button>
+<div aria-labelledby="nesteArtigo" class="lista-table-of-contents collapse pt-2" data-bs-parent="#accordionTC" id="nesteArtigo">
+<div class="lista-table-of-contents"><div class="table-of-contents"><ol><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-835-como-resolver/#regra-de-validacao-da-sefaz">1. Regra de validação da SEFAZ</a></li><li class="tc-h3"><a href="https://oobj.com.br/bc/rejeicao-835-como-resolver/#excecoes-e-observacoes">1.1. Exceções e observações</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-835-como-resolver/#como-resolver-a-rejeicao-835">2. Como resolver a Rejeição 835</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-835-como-resolver/#dicas-oobj-by-avalara">3. Dicas Oobj by Avalara</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/rejeicao-835-como-resolver/#referencias">4. Referências</a></li></ol></div></div> </div>
+</div>
+<div class="table-of-contents article-content" itemprop="articleBody">
+<p>Ao emitir uma Nota Fiscal Eletrônica (NF-e) para comercialização de defensivos agrícolas (agrotóxicos) classificados nos códigos NCM 3808.52.00, 3808.59.2X, 3808.6X.XX, 3808.91.9X, 3808.92.20, 3808.92.9X, 3808.93.2X, 3808.93.3X, 3808.93.5X, 3808.94.2X, 3808.99.20, é obrigatório informar o número da receita ou receituário agrícola. Se esse número não for informado, o contribuinte receberá a mensagem de erro: <strong>Rejeição 835: Não informado número da receita do defensivo agrícola</strong>.</p>
+<hr class="wp-block-separator has-alpha-channel-opacity">
+<h2 class="wp-block-heading" id="regra-de-validacao-da-sefaz"><a href="https://oobj.com.br/bc/rejeicao-835-como-resolver/#regra-de-validacao-da-sefaz">Regra de validação da SEFAZ</a></h2>
+<figure class="wp-block-table"><table class="has-fixed-layout"><tbody><tr><td><strong>Campo-Seq</strong></td><td><strong>Modelo</strong></td><td><strong>Regra de Validação</strong></td><td><strong>Aplic</strong>.</td><td><strong>Msg</strong></td><td><strong>Efeito</strong></td><td><strong>Descrição Erro</strong></td></tr><tr><td>ZF02-10</td><td>55</td><td>Defensivo Agrícola (NCM 3808.52.00, 3808.59.2X3808.6X.XX, 3808.91.9X, 3808.92.20, 3808.92.9X3808.93.2X, 3808.93.3X, 3808.93.5X, 3808.94.2X,3808.99.20 ) sem Receita / Receituário, quandofinNFe = 1 (normal) e indFinal = 1 (consumidorfinal).</td><td>Facult.</td><td>835</td><td>Rej.</td><td>Rejeição: Não informadonúmero da receita dodefensivo agrícola</td></tr></tbody></table><figcaption class="wp-element-caption"><em>Nota Técnica 2024.003 – ZF. Informações de Produtos da Agricultura, Pecuária e Produção Florestal</em></figcaption></figure>
+<h3 class="wp-block-heading" id="excecoes-e-observacoes"><a href="https://oobj.com.br/bc/rejeicao-835-como-resolver/#excecoes-e-observacoes">Exceções e observações</a></h3>
+<ol class="wp-block-list">
+<li>Este erro ocorre apenas quando o tipo de operação da NF-e é normal (finNFe = 1) e destinada ao consumidor final (indFinal = 1).</li>
+<li>Conforme a NT 2024.003, a regra de validação ZF02-10 não se aplica para operações com CFOP de Retorno e Transferência de Mercadorias.</li>
+</ol>
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<h2 class="wp-block-heading" id="como-resolver-a-rejeicao-835"><a href="https://oobj.com.br/bc/rejeicao-835-como-resolver/#como-resolver-a-rejeicao-835">Como resolver a Rejeição 835</a></h2>
+<ol class="wp-block-list">
+<li>Confirme o número da receita com o engenheiro-agrônomo que emitiu o receituário.</li>
+<li>Abra o XML da nota fiscal e localize a tag <strong>&lt;agropecuario&gt;</strong>.</li>
+<li>Insira o campo<strong> &lt;nReceituario&gt;</strong> dentro da tag <strong>&lt;defensivo&gt;</strong>, com o número informado na receita. Esse campo aceita até 20 caracteres.</li>
+<li>Reenvie a nota para autorização a partir do seu sistema emissor.</li>
+</ol>
+<p>Exemplo de XML corrigido:</p>
+<div class="codehilite"><pre><span></span><span class="linenos">1</span><span class="nt">&lt;agropecuario&gt;</span>
+<span class="linenos">2</span><span class="w">    </span><span class="nt">&lt;defensivo&gt;</span>
+<span class="linenos">3</span><span class="w">        </span><span class="nt">&lt;nReceituario&gt;</span>ABC1234567890<span class="nt">&lt;/nReceituario&gt;</span>
+<span class="linenos">4</span><span class="w">    </span><span class="nt">&lt;/defensivo&gt;</span>
+<span class="linenos">5</span><span class="nt">&lt;/agropecuario&gt;</span>
+</pre></div>
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<h2 class="wp-block-heading" id="dicas-oobj-by-avalara"><a href="https://oobj.com.br/bc/rejeicao-835-como-resolver/#dicas-oobj-by-avalara">Dicas Oobj by Avalara</a></h2>
+<ul class="wp-block-list">
+<li>Sempre confirme a validade e o número da receita antes de tentar emitir o XML.</li>
+<li>Mantenha organizada as receitas agrícolas para facilitar futuras emissões.</li>
+<li>Caso esteja em dúvida sobre qual NCM utilizar, consulte a <a href="https://oobj.com.br/legislacao/tabela-ncm-2025/">Tabela NCM atualizada</a>.</li>
+</ul>
+<p>A Rejeição 835 é um dos muitos detalhes que exigem atenção na emissão da NF-e com defensivos agrícolas.</p>
+<p><strong>Saiba como nossas soluções ajudam sua equipe a trabalhar com mais precisão:</strong> </p>
+<div class="wp-block-buttons is-content-justification-center is-layout-flex wp-container-core-buttons-is-layout-1 wp-block-buttons-is-layout-flex">
+<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="https://oobj.com.br/solucoes/?ref=BC">Conheça a Oobj by Avalara</a></div>
+</div>
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<h2 class="wp-block-heading" id="referencias"><a href="https://oobj.com.br/bc/rejeicao-835-como-resolver/#referencias">Referências</a></h2>
+<div class="wp-block-file"><a href="https://oobj.com.br/bc/wp-content/uploads/2025/05/NT_2024.003-Produtos-AGRO-NF-e.pdf" id="wp-block-file--media-dc566151-c690-4125-a10d-8a9bb09c99bb">NT_2024.003- Produtos AGRO NF-e</a><a aria-describedby="wp-block-file--media-dc566151-c690-4125-a10d-8a9bb09c99bb" class="wp-block-file__button wp-element-button" download="" href="https://oobj.com.br/bc/wp-content/uploads/2025/05/NT_2024.003-Produtos-AGRO-NF-e.pdf">Baixar</a></div>
+<p></p>
+</hr></div>
+</article></article></div></body></html>
