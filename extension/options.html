@@ -3,12 +3,57 @@
 <head>
   <title>Opções do Gerador de Manual</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; }
+    body { font-family: sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    form { margin-top: 30px; border: 1px solid #ccc; padding: 20px; border-radius: 5px; }
+    input[type="text"] { width: 95%; padding: 8px; margin-bottom: 10px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; }
   </style>
 </head>
 <body>
-  <h1>Opções</h1>
-  <p>A interface para gerenciar as fontes de dados será implementada aqui.</p>
+  <h1>Configuração de Fontes</h1>
+
+  <h2>Fontes Salvas</h2>
+  <table id="sourcesTable">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Domínio</th>
+        <th>Seletor de Título</th>
+        <th>Seletor de Conteúdo</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- As fontes serão inseridas aqui pelo options.js -->
+    </tbody>
+  </table>
+
+  <h2>Adicionar Nova Fonte</h2>
+  <form id="addSourceForm">
+    <label for="name">Nome da Fonte:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="domain_match">Domínio para Correspondência (ex: wikipedia.org):</label>
+    <input type="text" id="domain_match" name="domain_match" required>
+
+    <label for="base_url">URL Base (para links relativos):</label>
+    <input type="text" id="base_url" name="base_url" required>
+
+    <label for="title_selector">Seletor CSS do Título:</label>
+    <input type="text" id="title_selector" name="title_selector" required>
+
+    <label for="content_selector">Seletor CSS do Conteúdo:</label>
+    <input type="text" id="content_selector" name="content_selector" required>
+
+    <label for="article_links_selector">Seletor CSS para Links de Artigos (opcional, para modo scan):</label>
+    <input type="text" id="article_links_selector" name="article_links_selector">
+
+    <button type="submit">Adicionar Fonte</button>
+  </form>
+
   <script src="options.js"></script>
 </body>
 </html>
