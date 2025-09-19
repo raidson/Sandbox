@@ -1,10 +1,30 @@
+// --- Início do Tratamento Centralizado de Erros ---
+/**
+ * Captura erros não tratados que ocorrem no contexto do popup,
+ * os serializa e os envia para o service worker (background script) para registro centralizado.
+ * Isso garante que qualquer falha inesperada na UI seja registrada para depuração.
+ */
 window.onerror = function(message, source, lineno, colno, error) {
+    // Tenta criar um objeto de erro serializável para enviar ao background script.
+    const serializableError = {
+        name: error ? error.name : 'UnknownError',
+        message: error ? error.message : message,
+        stack: error ? error.stack : (new Error(message)).stack,
+        source: source,
+        lineno: lineno,
+        colno: colno
+    };
+
     chrome.runtime.sendMessage({
         action: "logError",
-        message: `Error: ${message} at ${source}:${lineno}:${colno}`
+        message: `Erro não capturado no popup: ${message}`,
+        error: serializableError
     });
-    return true; // Prevents the default browser error handling
+
+    // Retorna true para suprimir o diálogo de erro padrão do navegador.
+    return true;
 };
+// --- Fim do Tratamento Centralizado de Erros ---
 
 const captureBtn = document.getElementById('captureBtn');
 const generateBtn = document.getElementById('generateBtn');
