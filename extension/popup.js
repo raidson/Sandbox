@@ -1,7 +1,16 @@
+window.onerror = function(message, source, lineno, colno, error) {
+    chrome.runtime.sendMessage({
+        action: "logError",
+        message: `Error: ${message} at ${source}:${lineno}:${colno}`
+    });
+    return true; // Prevents the default browser error handling
+};
+
 const captureBtn = document.getElementById('captureBtn');
 const generateBtn = document.getElementById('generateBtn');
 const clearBtn = document.getElementById('clearBtn');
 const downloadBtn = document.getElementById('downloadBtn');
+const viewLogsLink = document.getElementById('viewLogsLink');
 const statusDiv = document.getElementById('status');
 const progressContainer = document.getElementById('progressContainer');
 const progressBar = document.getElementById('progressBar');
@@ -41,6 +50,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (request.downloadReady) {
             downloadBtn.style.display = 'block';
         }
+    } else if (request.action === "criticalError") {
+        progressContainer.style.display = 'none';
+        generateBtn.disabled = false;
+        captureBtn.disabled = false;
+        showStatus("Ocorreu um erro. Verifique os logs.", true);
     }
 });
 
@@ -109,6 +123,11 @@ downloadBtn.addEventListener('click', () => {
         }
         downloadBtn.disabled = false;
     });
+});
+
+viewLogsLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    chrome.tabs.create({ url: 'logs.html' });
 });
 
 // Inicializa o estado do botão de download ao abrir o popup

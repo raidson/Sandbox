@@ -69,59 +69,69 @@ function sendMessageToPopup(message) {
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === "capturePage") {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs.length === 0) {
-        const errorMsg = "Nenhuma aba ativa encontrada.";
-        logActivity(`Erro na captura: ${errorMsg}`);
-        return sendResponse({ status: "error", message: errorMsg });
-      }
-      const activeTab = tabs[0];
-      logActivity(`Captura de página solicitada para: ${activeTab.url}`);
-      const sourceConfig = getSourceConfigForUrl(activeTab.url);
+    try {
+        if (request.action === "capturePage") {
+            // ... (rest of the logic remains the same)
+            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+                if (tabs.length === 0) {
+                    const errorMsg = "Nenhuma aba ativa encontrada.";
+                    logActivity(`Erro na captura: ${errorMsg}`);
+                    return sendResponse({ status: "error", message: errorMsg });
+                }
+                const activeTab = tabs[0];
+                logActivity(`Captura de página solicitada para: ${activeTab.url}`);
+                const sourceConfig = getSourceConfigForUrl(activeTab.url);
 
-      if (!sourceConfig) {
-        const errorMsg = `Nenhuma fonte de configuração encontrada para a URL: ${activeTab.url}`;
-        logActivity(`Erro na captura: ${errorMsg}`);
-        return sendResponse({ status: "error", message: errorMsg });
-      }
+                if (!sourceConfig) {
+                    const errorMsg = `Nenhuma fonte de configuração encontrada para a URL: ${activeTab.url}`;
+                    logActivity(`Erro na captura: ${errorMsg}`);
+                    return sendResponse({ status: "error", message: errorMsg });
+                }
 
-      chrome.tabs.sendMessage(activeTab.id, { action: "extractContent", config: sourceConfig }, (response) => {
-        if (chrome.runtime.lastError) {
-          const errorMsg = chrome.runtime.lastError.message;
-          logActivity(`Erro na captura (content script): ${errorMsg}`);
-          return sendResponse({ status: "error", message: errorMsg });
-        }
-        if (response && response.status === 'success') {
-          chrome.storage.local.get({ articles: [] }, (result) => {
-            const articles = result.articles;
-            articles.push(response.data);
-            chrome.storage.local.set({ articles }, () => {
-              logActivity(`Artigo salvo com sucesso: "${response.data.title}"`);
-              sendResponse({ status: "success", message: "Artigo salvo!" });
+                chrome.tabs.sendMessage(activeTab.id, { action: "extractContent", config: sourceConfig }, (response) => {
+                    if (chrome.runtime.lastError) {
+                        const errorMsg = chrome.runtime.lastError.message;
+                        logActivity(`Erro na captura (content script): ${errorMsg}`);
+                        return sendResponse({ status: "error", message: errorMsg });
+                    }
+                    if (response && response.status === 'success') {
+                        chrome.storage.local.get({ articles: [] }, (result) => {
+                            const articles = result.articles;
+                            articles.push(response.data);
+                            chrome.storage.local.set({ articles }, () => {
+                                logActivity(`Artigo salvo com sucesso: "${response.data.title}"`);
+                                sendResponse({ status: "success", message: "Artigo salvo!" });
+                            });
+                        });
+                    } else {
+                        const errorMsg = (response && response.message) || "Erro desconhecido no content script.";
+                        logActivity(`Erro na captura (content script): ${errorMsg}`);
+                        sendResponse({ status: "error", message: errorMsg });
+                    }
+                });
             });
-          });
-        } else {
-          const errorMsg = (response && response.message) || "Erro desconhecido no content script.";
-          logActivity(`Erro na captura (content script): ${errorMsg}`);
-          sendResponse({ status: "error", message: errorMsg });
+            return true; // Keep the message channel open for async response
         }
-      });
-    });
-    return true;
-  }
-  else if (request.action === "generateManual") {
-    generateManualWithProgress();
-  }
-  else if (request.action === "clearArticles") {
-    chrome.storage.local.set({ articles: [] }, () => {
-        logActivity("Todos os artigos foram limpos.");
-        console.log("Artigos limpos.");
-    });
-  }
-  else if (request.action === "getDefaultSources") {
-    sendResponse({ data: defaultConfigSources });
-  }
+        else if (request.action === "generateManual") {
+            generateManualWithProgress().catch(e => logActivity(`ERRO CRÍTICO em generateManualWithProgress: ${e.message}`));
+        }
+        else if (request.action === "clearArticles") {
+            chrome.storage.local.set({ articles: [] }, () => {
+                logActivity("Todos os artigos foram limpos.");
+                console.log("Artigos limpos.");
+            });
+        }
+        else if (request.action === "getDefaultSources") {
+            sendResponse({ data: defaultConfigSources });
+        }
+        else if (request.action === "logError") {
+            logActivity(`ERRO NO POPUP: ${request.message}`);
+        }
+    } catch (e) {
+        const errorMessage = `ERRO CRÍTICO no listener de mensagens: ${e.message}`;
+        logActivity(errorMessage);
+        sendMessageToPopup({ action: "criticalError", message: errorMessage });
+    }
 });
 
 async function generateManualWithProgress() {
