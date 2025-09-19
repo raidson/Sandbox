@@ -1,5 +1,23 @@
 console.log('Service Worker do Gerador de Manual iniciado.');
 
+// --- Início da Implementação de Log ---
+async function logActivity(message) {
+    try {
+        const { manualGeneratorLogs = [] } = await chrome.storage.local.get('manualGeneratorLogs');
+        const timestamp = new Date().toISOString();
+        manualGeneratorLogs.push(`[${timestamp}] ${message}`);
+        // Para evitar que o log cresça indefinidamente, mantemos apenas os últimos 200 registros.
+        if (manualGeneratorLogs.length > 200) {
+            manualGeneratorLogs.splice(0, manualGeneratorLogs.length - 200);
+        }
+        await chrome.storage.local.set({ manualGeneratorLogs });
+    } catch (error) {
+        console.error("Erro ao registrar atividade:", error);
+    }
+}
+logActivity("Service Worker iniciado.");
+// --- Fim da Implementação de Log ---
+
 let sourcesConfig = [];
 
 const defaultConfigSources = [
@@ -23,16 +41,15 @@ const defaultConfigSources = [
 
 function loadConfig() {
     chrome.storage.local.get({ sources: defaultConfigSources }, (result) => {
-        console.log("Configuração de fontes carregada.");
+        logActivity("Configuração de fontes carregada.");
         sourcesConfig = result.sources;
     });
 }
 
-// Carrega a configuração na inicialização e ouve por mudanças
 loadConfig();
 chrome.storage.onChanged.addListener((changes, namespace) => {
     if (namespace === 'local' && changes.sources) {
-        console.log("Configuração de fontes foi atualizada em tempo real.");
+        logActivity("Configuração de fontes foi atualizada em tempo real.");
         sourcesConfig = changes.sources.newValue;
     }
 });
@@ -47,56 +64,104 @@ function getSourceConfigForUrl(url) {
   return null;
 }
 
+function sendMessageToPopup(message) {
+    chrome.runtime.sendMessage(message);
+}
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "capturePage") {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs.length === 0) {
-        return sendResponse({ status: "error", message: "Nenhuma aba ativa encontrada." });
+        const errorMsg = "Nenhuma aba ativa encontrada.";
+        logActivity(`Erro na captura: ${errorMsg}`);
+        return sendResponse({ status: "error", message: errorMsg });
       }
       const activeTab = tabs[0];
+      logActivity(`Captura de página solicitada para: ${activeTab.url}`);
       const sourceConfig = getSourceConfigForUrl(activeTab.url);
 
       if (!sourceConfig) {
-        return sendResponse({ status: "error", message: `Nenhuma fonte de configuração encontrada para a URL: ${activeTab.url}` });
+        const errorMsg = `Nenhuma fonte de configuração encontrada para a URL: ${activeTab.url}`;
+        logActivity(`Erro na captura: ${errorMsg}`);
+        return sendResponse({ status: "error", message: errorMsg });
       }
 
       chrome.tabs.sendMessage(activeTab.id, { action: "extractContent", config: sourceConfig }, (response) => {
         if (chrome.runtime.lastError) {
-          return sendResponse({ status: "error", message: chrome.runtime.lastError.message });
+          const errorMsg = chrome.runtime.lastError.message;
+          logActivity(`Erro na captura (content script): ${errorMsg}`);
+          return sendResponse({ status: "error", message: errorMsg });
         }
         if (response && response.status === 'success') {
           chrome.storage.local.get({ articles: [] }, (result) => {
             const articles = result.articles;
             articles.push(response.data);
             chrome.storage.local.set({ articles }, () => {
+              logActivity(`Artigo salvo com sucesso: "${response.data.title}"`);
               sendResponse({ status: "success", message: "Artigo salvo!" });
             });
           });
         } else {
-          sendResponse({ status: "error", message: (response && response.message) || "Erro no content script." });
+          const errorMsg = (response && response.message) || "Erro desconhecido no content script.";
+          logActivity(`Erro na captura (content script): ${errorMsg}`);
+          sendResponse({ status: "error", message: errorMsg });
         }
       });
     });
-    return true; // para sendResponse assíncrono
+    return true;
   }
   else if (request.action === "generateManual") {
-    chrome.storage.local.get({ articles: [] }, (result) => {
-      if (result.articles && result.articles.length > 0) {
-        const finalHtml = createHtmlManual(result.articles);
-        const url = "data:text/html;charset=utf-8," + encodeURIComponent(finalHtml);
-        chrome.tabs.create({ url: url });
-      }
-    });
+    generateManualWithProgress();
   }
   else if (request.action === "clearArticles") {
-    chrome.storage.local.set({ articles: [] }, () => console.log("Artigos limpos."));
+    chrome.storage.local.set({ articles: [] }, () => {
+        logActivity("Todos os artigos foram limpos.");
+        console.log("Artigos limpos.");
+    });
   }
   else if (request.action === "getDefaultSources") {
     sendResponse({ data: defaultConfigSources });
   }
 });
 
-function createHtmlManual(articlesData) {
+async function generateManualWithProgress() {
+    logActivity("Geração de manual iniciada.");
+    const result = await chrome.storage.local.get({ articles: [] });
+    if (!result.articles || result.articles.length === 0) {
+        logActivity("Geração de manual abortada: nenhum artigo para processar.");
+        sendMessageToPopup({ action: "generationComplete" });
+        return;
+    }
+
+    const articles = result.articles;
+    const total = articles.length;
+    logActivity(`Encontrados ${total} artigos para processar.`);
+
+    sendMessageToPopup({ action: "progressUpdate", current: 0, total: total });
+
+    let finalHtml = getHtmlHeader(articles);
+
+    for (let i = 0; i < total; i++) {
+        logActivity(`Processando artigo ${i + 1}/${total}: "${articles[i].title}"`);
+        finalHtml += getArticleHtml(articles[i], i);
+        await new Promise(resolve => setTimeout(resolve, 50));
+        sendMessageToPopup({ action: "progressUpdate", current: i + 1, total: total });
+    }
+
+    finalHtml += getHtmlFooter();
+
+    logActivity("Geração de manual concluída. Criando arquivo para visualização.");
+    const url = "data:text/html;charset=utf-8," + encodeURIComponent(finalHtml);
+    chrome.tabs.create({ url: url });
+
+    // Salva o manual gerado para download posterior
+    await chrome.storage.local.set({ lastGeneratedManualHtml: finalHtml });
+    logActivity("Manual salvo no armazenamento local para download.");
+
+    sendMessageToPopup({ action: "generationComplete", downloadReady: true });
+}
+
+function getHtmlHeader(articlesData) {
     const pygmentsCss = `
         pre { line-height: 125%; }
         td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -221,17 +286,19 @@ function createHtmlManual(articlesData) {
     });
 
     html += \`</ul></section>\`;
+    return html;
+}
 
-    articlesData.forEach((article, i) => {
-        const anchor = \`artigo-\${i}\`;
-        html += \`<article id='\${anchor}'><h2>\${article.title}</h2>\${article.htmlContent}</article>\`;
-    });
+function getArticleHtml(article, index) {
+    const anchor = \`artigo-\${index}\`;
+    return \`<article id='\${anchor}'><h2>\${article.title}</h2>\${article.htmlContent}</article>\`;
+}
 
-    html += \`
+function getHtmlFooter() {
+    return \`
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>
 </body>
 </html>\`;
-    return html;
 }
