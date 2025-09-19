@@ -96,4 +96,74 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
         }
         .codehilite strong { font-weight: bold !important; color: #CD0000 !important; }
     </style>
-    </head><body><div class='container'><h1>Manual - Base de Conhecimento</h1><section id='indice'><h2>Índice</h2><ul><li><a href='#artigo-0'>Aplicativos de terceiros</a></li><li><a href='#artigo-1'>Base de conhecimento</a></li><li><a href='#artigo-2'>Como a Avalara Brasil pode ajudar?</a></li><li><a href='#artigo-3'>Dicas e ferramentas</a></li><li><a href='#artigo-4'>Impressoras</a></li></ul></section><article id='artigo-0'><h2>Aplicativos de terceiros</h2><p>Conteúdo não encontrado ou vazio.</p></article><article id='artigo-1'><h2>Base de conhecimento</h2><p>Conteúdo não encontrado ou vazio.</p></article><article id='artigo-2'><h2>Como a Avalara Brasil pode ajudar?</h2><p>Conteúdo não encontrado ou vazio.</p></article><article id='artigo-3'><h2>Dicas e ferramentas</h2><p>Conteúdo não encontrado ou vazio.</p></article><article id='artigo-4'><h2>Impressoras</h2><p>Conteúdo não encontrado ou vazio.</p></article></div></body></html>
+    </head><body><div class='container'><h1>Manual - Base de Conhecimento</h1><section id='indice'><h2>Índice</h2><ul><li><a href='#artigo-0'>Rejeição 388: Código de Situação Tributária do IPI incompatível com o Código de Enquadramento Legal do IPI - Como resolver?</a></li></ul></section><article id='artigo-0'><h2>Rejeição 388: Código de Situação Tributária do IPI incompatível com o Código de Enquadramento Legal do IPI - Como resolver?</h2><article class="conteudo" itemscope="" itemtype="http://schema.org/Article">
+<h1 class="mt-0 mb-4" itemprop="headline">Rejeição 388: Código de Situação Tributária do IPI incompatível com o Código de Enquadramento Legal do IPI - Como resolver?</h1>
+<div class="d-flex align-items-center mb-4 mb-lg-5 justify-content-between">
+<div class="d-flex lh-1 align-items-center cor-cinza fonteregular fonte-pequena">
+<div class="data-published d-flex align-items-center cor-cinza fonteregular fonte-pequena">
+<time datetime="2015-10-05T13:28:06-03:00" itemprop="datePublished">05/10/2015</time>
+<div class="data-tempo-leitura d-flex align-items-center cor-cinza fonteregular fonte-pequena ms-3">
+                        3 minutos <span class="d-none d-md-inline-flex">de leitura</span> </div>
+</div>
+</div>
+<a class="copy-link ms-2" data-bs-placement="left" data-bs-toggle="tooltip" href="https://oobj.com.br/bc/" title="Copiar o link da página"><span class="d-none">Copiar</span></a>
+</div>
+<div class="d-block d-xl-none accordion border border-1 border-cinza-medio bg-cinza-claro rounded-3 p-3 mb-5" id="accordionTC">
+<button aria-controls="nesteArtigo" aria-expanded="true" class="m-0 p-0 lh-1 fs-5 fontesemibold btn-neste-artigo bg-transparente w-100 border-0 collapsed" data-bs-target="#nesteArtigo" data-bs-toggle="collapse">Neste artigo</button>
+<div aria-labelledby="nesteArtigo" class="lista-table-of-contents collapse pt-2" data-bs-parent="#accordionTC" id="nesteArtigo">
+<div class="lista-table-of-contents"><div class="table-of-contents"><ol><li class="tc-h2"><a href="https://oobj.com.br/bc/#excecoes">1. Exceções</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/#exemplo">2. Exemplo</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/#regra-de-validacao-da-sefaz">3. Regra de validação da Sefaz:</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/#como-resolver">4. Como resolver</a></li><li class="tc-h2"><a href="https://oobj.com.br/bc/#referencia">5. Referência</a></li></ol></div></div> </div>
+</div>
+<div class="table-of-contents article-content" itemprop="articleBody">
+<p>Quando for emitida uma NFe e o Código de Enquadramento Legal do IPI (cEnq) não for compatível com o CST será retornado a rejeição “388 – Código de Situação Tributária do IPI incompatível com o Código de Enquadramento Legal do IPI”. </p>
+<h2 class="wp-block-heading" id="excecoes"><a href="https://oobj.com.br/bc/#excecoes">Exceções</a></h2>
+<ol class="wp-block-list"><li>A regra de validação 388 não se aplica, em produção, para NFe com data de emissão anterior a 01/04/2016.</li>
+</ol>
+<h2 class="wp-block-heading" id="exemplo"><a href="https://oobj.com.br/bc/#exemplo">Exemplo</a></h2>
+<p>Foi emitida uma NFe com cEnq igual à “999 – Outros/Tributação normal IPI” e com CST igual à “55 – Saída com suspensão”. Nessa situação a NFe será rejeitada pelo motivo 388.</p>
+<ul class="wp-block-list"><li>No XML: Os campos associados a essa validação são: <cenq> e <cst>, dentro do Grupo <ipi></ipi></cst></cenq></li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="linenos">1</span>[...]IPI&gt;
+<span class="linenos">2</span><span class="w">    </span><span class="nt">&lt;cEnq&gt;</span>999<span class="nt">&lt;/cEnq&gt;</span>
+<span class="linenos">3</span><span class="w">    </span><span class="nt">&lt;IPINT&gt;</span>
+<span class="linenos">4</span><span class="w">        </span><span class="nt">&lt;CST&gt;</span>55<span class="nt">&lt;/CST&gt;</span>
+<span class="linenos">5</span><span class="w">    </span><span class="nt">&lt;/IPINT&gt;</span>
+<span class="linenos">6</span><span class="nt">&lt;/IPI&gt;</span>
+</pre></div>
+
+<ul class="wp-block-list"><li>No TXT-SP:</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="linenos">1</span>[...]O|||||<span class="nt">&lt;strong&gt;</span>999<span class="nt">&lt;/strong&gt;</span>|
+<span class="linenos">2</span>O08|55|
+</pre></div>
+
+<h2 class="wp-block-heading" id="regra-de-validacao-da-sefaz"><a href="https://oobj.com.br/bc/#regra-de-validacao-da-sefaz">Regra de validação da Sefaz:</a></h2>
+<figure class="wp-block-table"><table><tbody><tr><td>Campo-Seq</td><td>Modelo</td><td>Regra de Validação</td><td>Aplic.</td><td>Msg</td><td>Efeito</td><td>Descrição Erro</td></tr><tr><td>O09-10</td><td>55</td><td>Verificar compatibilidade entre o CST do IPI e o Código de Enquadramento Legal (cEnq), conforme as regras abaixo:<br/>– CST de Isenção e Código de Enquadramento incompatível<br/>(IPINT/CST=02, 52 e cEnq fora da faixa [301, 399])<br/>– CST de Imunidade e Código de Enquadramento incompatível<br/>(IPINT/CST=04, 54 e cEnq fora da faixa [001, 099])<br/>– CST de Suspensão e Código de Enquadramento incompatível<br/>(IPINT/CST=05, 55 e cEnq fora da faixa [101, 199])<br/>Exceção: A regra de validação não se aplica, em produção, para Nota Fiscal com data de emissão anterior a 01/04/2016. (NT 2015.002)</td><td>Obrig.</td><td>388</td><td>Rej.</td><td>Rejeição: Código de Situação Tributária do IPI incompatível com o Código de Enquadramento Legal do IPI [nItem: nnn]</td></tr></tbody></table><figcaption class="wp-element-caption">MOC 7.0 – Anexo I – Leiaute e Regras de Validação da NFe e da NFCe – O. Item / Tributo: IPI</figcaption></figure>
+<h2 class="wp-block-heading" id="como-resolver"><a href="https://oobj.com.br/bc/#como-resolver">Como resolver</a></h2>
+<p>Usando o exemplo anterior, siga os passos para identificar e corrigir a rejeição da NFe:</p>
+<div class="wp-block-group"><div class="wp-block-group__inner-container is-layout-constrained wp-block-group-is-layout-constrained">
+<p>1 – Verifique os campos cEnq e CST preenchido para o IPI de cada produto da NFe:</p>
+<div class="codehilite"><pre><span></span><span class="linenos">1</span>[...]IPI&gt;
+<span class="linenos">2</span><span class="w">    </span><span class="nt">&lt;cEnq&gt;</span>999<span class="nt">&lt;/cEnq&gt;</span>
+<span class="linenos">3</span><span class="w">    </span><span class="nt">&lt;IPINT&gt;</span>
+<span class="linenos">4</span><span class="w">        </span><span class="nt">&lt;CST&gt;</span>55<span class="nt">&lt;/CST&gt;</span>
+<span class="linenos">5</span><span class="w">    </span><span class="nt">&lt;/IPINT&gt;</span>
+<span class="linenos">6</span><span class="nt">&lt;/IPI&gt;</span>
+</pre></div>
+
+<p>2 – Compare esses valores com as regras definidas pela Sefaz:</p>
+</div></div>
+<ul class="wp-block-list"><li>Se CST = “02” ou “52”, informar cEnq com um valor entre “301” e “399”;</li>
+<li>Se CST = “04” ou “54”, informar cEnq com um valor entre “001” e “099”;</li>
+<li>Se CST = “05” ou “55”, informar cEnq com um valor entre “101” e “199”;</li>
+<li>Para os demais casos, informar cEnq com um valor entre “601 a 608” ou “999”.</li>
+</ul>
+<p>3 – No exemplo, cEnq = “999” e CST = “55”. Após análise das regras e os valores, é possível perceber que para o CST “55” é aceito para o campo cEnq apenas valores que estejam entre “101” e “199”. Para saber qual o código deve informar para o cEnq (Código de Enquadramento Legal do IPI) consulte a Nota Técnica 2020.002 – v.1.00 – Publicada em 18/05/2020:</p>
+<div class="wp-block-file"><a href="https://oobj.com.br/bc//wp-content/uploads/2015/10/Nota-Tecnica-2020_002-v1_00.pdf" id="wp-block-file--media-ce4b5666-6a77-487a-b1ee-5c165acad5d0">Nota Técnica 2020_002 v1_00</a><a aria-describedby="wp-block-file--media-ce4b5666-6a77-487a-b1ee-5c165acad5d0" class="wp-block-file__button wp-element-button" download="" href="https://oobj.com.br/bc//wp-content/uploads/2015/10/Nota-Tecnica-2020_002-v1_00.pdf">Baixar</a></div>
+<p>4 – Altere o valor do <strong>cEnq</strong> para que se adeque a regra, mediante identificação do código na tabela acima que corresponda a Operação descrita na NFe.</p>
+<p>Feita a correção, basta reenviar a NFe a partir do seu <a href="http://oobj.com.br/solucoes/oobj-nfe">Software Emissor</a>.</p>
+<p>Para mais informações sobre o Código de Enquadramento Legal do IPI acesse o artigo <a href="https://oobj.com.br/bc/article/o-que-%c3%a9-o-c%c3%b3digo-de-enquadramento-legal-do-ipi-cenq-410.html">O que é o Código de Enquadramento Legal do IPI (cEnq)?</a></p>
+<h2 class="wp-block-heading" id="referencia"><a href="https://oobj.com.br/bc/#referencia">Referência</a></h2>
+<div class="wp-block-file"><a href="https://oobj.com.br/bc//wp-content/uploads/2015/10/Nota-Tecnica-2020_002-v1_00.pdf" id="wp-block-file--media-b90a5f6a-55da-44bf-a134-e4ff50be9e88">Nota Técnica 2020_002 v1_00</a><a aria-describedby="wp-block-file--media-b90a5f6a-55da-44bf-a134-e4ff50be9e88" class="wp-block-file__button wp-element-button" download="" href="https://oobj.com.br/bc//wp-content/uploads/2015/10/Nota-Tecnica-2020_002-v1_00.pdf">Baixar</a></div>
+<div class="wp-block-file"><a href="https://oobj.com.br/bc//wp-content/uploads/2024/06/moc7-anexo-i-leiaute-e-rv.pdf" id="wp-block-file--media-53407b92-a3f2-4343-9463-89821d7cd9f4">moc7-anexo-i-leiaute-e-rv</a><a aria-describedby="wp-block-file--media-53407b92-a3f2-4343-9463-89821d7cd9f4" class="wp-block-file__button wp-element-button" download="" href="https://oobj.com.br/bc//wp-content/uploads/2024/06/moc7-anexo-i-leiaute-e-rv.pdf">Baixar</a></div>
+</div>
+</article></article></div></body></html>

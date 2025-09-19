@@ -154,6 +154,12 @@ def create_html_manual(articles_data, filename):
         print(f"\n✅ Arquivo HTML '{filename}' criado com sucesso!")
     except Exception as e: print(f"\n❌ Erro ao salvar o arquivo HTML: {e}")
 
+def get_source_config_for_url(url):
+    for source in CONFIG['SOURCES']:
+        if source['domain_match'] in url:
+            return source
+    return None
+
 # Lógica principal de execução
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -170,12 +176,6 @@ if __name__ == "__main__":
                         help='Número máximo de páginas a serem capturadas no modo de varredura (padrão: 50).')
 
     args = parser.parse_args()
-
-    def get_source_config_for_url(url):
-        for source in CONFIG['SOURCES']:
-            if source['domain_match'] in url:
-                return source
-        return None
 
     lista_de_links_para_processar = []
 
