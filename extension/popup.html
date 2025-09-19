@@ -10,9 +10,14 @@
 <body>
   <h1>Gerador de Manual</h1>
   <div id="status" style="min-height: 20px; color: green;"></div>
+  <div id="progressContainer" style="display: none;">
+    <progress id="progressBar" value="0" max="100"></progress>
+    <div id="progressText"></div>
+  </div>
   <button id="captureBtn">Capturar esta Página</button>
   <hr>
   <button id="generateBtn">Gerar Manual</button>
+  <button id="downloadBtn" title="Baixar o último manual gerado" style="display: none;">Baixar Manual</button>
   <button id="clearBtn" title="Limpar todos os artigos salvos">Limpar</button>
   <script src="popup.js"></script>
 </body>
