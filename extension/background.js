@@ -205,6 +205,7 @@ function createHtmlManual(articlesData) {
 <head>
   <meta charset='UTF-8'>
   <title>Manual - Base de Conhecimento</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
   \${htmlStyle}
 </head>
 <body>
@@ -226,6 +227,11 @@ function createHtmlManual(articlesData) {
         html += \`<article id='\${anchor}'><h2>\${article.title}</h2>\${article.htmlContent}</article>\`;
     });
 
-    html += \`</div></body></html>\`;
+    html += \`
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</body>
+</html>\`;
     return html;
 }
