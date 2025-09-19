@@ -129,7 +129,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     }
                 });
             });
-            return true; // Manter o canal de mensagem aberto para resposta assíncrona.
         }
         else if (request.action === "generateManual") {
             generateManualWithProgress().catch(e => logActivity("Falha ao gerar manual", e));
@@ -155,8 +154,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         // Tenta notificar o popup sobre o erro crítico, se possível.
         sendMessageToPopup({ action: "criticalError", message: `Erro inesperado: ${e.message}` });
     }
-    // Retornar true para operações assíncronas é tratado dentro do 'if' para capturePage.
-    return true;
+    // Retornar true é essencial para indicar que a `sendResponse` será chamada de forma assíncrona.
+    // Isso só é necessário para a ação 'capturePage'.
+    if (request.action === "capturePage") {
+        return true;
+    }
 });
 
 async function generateManualWithProgress() {
