@@ -60,18 +60,39 @@ function extractArticleDetails(sourceConfig) {
     return { title, htmlContent };
 }
 
-// A lógica para receber a mensagem do background script e iniciar a extração será adicionada aqui.
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === "extractContent") {
-    console.log("Recebida mensagem para extrair conteúdo com a configuração:", request.config);
-    const articleDetails = extractArticleDetails(request.config);
+    if (request.action === "extractContent") {
+        try {
+            console.log("Recebida mensagem para extrair conteúdo com a configuração:", request.config);
+            const articleDetails = extractArticleDetails(request.config);
 
-    if (articleDetails) {
-      sendResponse({ status: "success", data: articleDetails });
-    } else {
-      sendResponse({ status: "error", message: "Falha ao extrair detalhes do artigo." });
+            if (articleDetails) {
+                sendResponse({ status: "success", data: articleDetails });
+            } else {
+                // Envia uma resposta de erro estruturada se a extração falhar logicamente.
+                sendResponse({
+                    status: "error",
+                    message: "Não foi possível encontrar o conteúdo com os seletores fornecidos.",
+                    error: {
+                        name: "ExtractionError",
+                        message: "Os seletores de título ou conteúdo não corresponderam a nenhum elemento na página."
+                    }
+                });
+            }
+        } catch (e) {
+            // Captura qualquer erro inesperado durante a extração e o envia para o background.
+            console.error("Gerador de Manual: Erro inesperado durante a extração de conteúdo.", e);
+            sendResponse({
+                status: "error",
+                message: `Erro inesperado no script de conteúdo: ${e.message}`,
+                error: { // Garante que o erro seja serializável
+                    name: e.name,
+                    message: e.message,
+                    stack: e.stack
+                }
+            });
+        }
     }
-  }
-  // Retorna true se a resposta for assíncrona, o que não é o caso aqui, mas é uma boa prática.
-  return true;
+    // Retorna true para indicar que a resposta será enviada de forma assíncrona.
+    return true;
 });

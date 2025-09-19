@@ -1,18 +1,35 @@
 console.log('Service Worker do Gerador de Manual iniciado.');
 
 // --- Início da Implementação de Log ---
-async function logActivity(message) {
+async function logActivity(message, error = null) {
     try {
         const { manualGeneratorLogs = [] } = await chrome.storage.local.get('manualGeneratorLogs');
         const timestamp = new Date().toISOString();
-        manualGeneratorLogs.push(`[${timestamp}] ${message}`);
+
+        let logEntry = `[${timestamp}] ${message}`;
+
+        // Se um objeto de erro for fornecido, anexa detalhes do erro.
+        if (error) {
+            logEntry += `\n  ERRO: ${error.name}: ${error.message}`;
+            if (error.stack) {
+                // Adiciona o stack trace para uma depuração mais fácil.
+                logEntry += `\n  STACK TRACE:\n${error.stack}`;
+            }
+        }
+
+        manualGeneratorLogs.push(logEntry);
+
         // Para evitar que o log cresça indefinidamente, mantemos apenas os últimos 200 registros.
         if (manualGeneratorLogs.length > 200) {
             manualGeneratorLogs.splice(0, manualGeneratorLogs.length - 200);
         }
         await chrome.storage.local.set({ manualGeneratorLogs });
-    } catch (error) {
-        console.error("Erro ao registrar atividade:", error);
+    } catch (e) {
+        // Se o próprio sistema de log falhar, registra no console.
+        console.error("Falha crítica no sistema de log:", e);
+        if (error) {
+            console.error("Erro original que falhou ao ser logado:", error);
+        }
     }
 }
 logActivity("Service Worker iniciado.");
@@ -69,14 +86,15 @@ function sendMessageToPopup(message) {
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    // Envolve todo o manipulador de mensagens em um bloco try-catch para capturar
+    // e registrar quaisquer erros não tratados que possam derrubar o service worker.
     try {
         if (request.action === "capturePage") {
-            // ... (rest of the logic remains the same)
+            // Lógica de captura de página
             chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
                 if (tabs.length === 0) {
-                    const errorMsg = "Nenhuma aba ativa encontrada.";
-                    logActivity(`Erro na captura: ${errorMsg}`);
-                    return sendResponse({ status: "error", message: errorMsg });
+                    logActivity("Erro na captura: Nenhuma aba ativa encontrada.");
+                    return sendResponse({ status: "error", message: "Nenhuma aba ativa encontrada." });
                 }
                 const activeTab = tabs[0];
                 logActivity(`Captura de página solicitada para: ${activeTab.url}`);
@@ -84,15 +102,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
                 if (!sourceConfig) {
                     const errorMsg = `Nenhuma fonte de configuração encontrada para a URL: ${activeTab.url}`;
-                    logActivity(`Erro na captura: ${errorMsg}`);
+                    logActivity(errorMsg);
                     return sendResponse({ status: "error", message: errorMsg });
                 }
 
                 chrome.tabs.sendMessage(activeTab.id, { action: "extractContent", config: sourceConfig }, (response) => {
                     if (chrome.runtime.lastError) {
-                        const errorMsg = chrome.runtime.lastError.message;
-                        logActivity(`Erro na captura (content script): ${errorMsg}`);
-                        return sendResponse({ status: "error", message: errorMsg });
+                        logActivity(`Erro ao comunicar com content script`, chrome.runtime.lastError);
+                        return sendResponse({ status: "error", message: chrome.runtime.lastError.message });
                     }
                     if (response && response.status === 'success') {
                         chrome.storage.local.get({ articles: [] }, (result) => {
@@ -104,34 +121,42 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                             });
                         });
                     } else {
+                        // Agora, o erro do content script pode vir com um objeto de erro detalhado.
                         const errorMsg = (response && response.message) || "Erro desconhecido no content script.";
-                        logActivity(`Erro na captura (content script): ${errorMsg}`);
+                        const errorObj = (response && response.error) ? response.error : null;
+                        logActivity(`Falha no content script: ${errorMsg}`, errorObj);
                         sendResponse({ status: "error", message: errorMsg });
                     }
                 });
             });
-            return true; // Keep the message channel open for async response
+            return true; // Manter o canal de mensagem aberto para resposta assíncrona.
         }
         else if (request.action === "generateManual") {
-            generateManualWithProgress().catch(e => logActivity(`ERRO CRÍTICO em generateManualWithProgress: ${e.message}`));
+            generateManualWithProgress().catch(e => logActivity("Falha ao gerar manual", e));
         }
         else if (request.action === "clearArticles") {
             chrome.storage.local.set({ articles: [] }, () => {
                 logActivity("Todos os artigos foram limpos.");
-                console.log("Artigos limpos.");
             });
         }
         else if (request.action === "getDefaultSources") {
             sendResponse({ data: defaultConfigSources });
         }
         else if (request.action === "logError") {
-            logActivity(`ERRO NO POPUP: ${request.message}`);
+            // Deserializa o erro do popup para um objeto de Erro real
+            const error = new Error(request.error.message);
+            error.name = request.error.name || 'PopupError';
+            error.stack = request.error.stack || (new Error()).stack;
+            logActivity(`Erro recebido do popup: ${request.message}`, error);
         }
     } catch (e) {
-        const errorMessage = `ERRO CRÍTICO no listener de mensagens: ${e.message}`;
-        logActivity(errorMessage);
-        sendMessageToPopup({ action: "criticalError", message: errorMessage });
+        // Captura final para qualquer erro síncrono inesperado no listener.
+        logActivity("Erro crítico inesperado no listener de mensagens", e);
+        // Tenta notificar o popup sobre o erro crítico, se possível.
+        sendMessageToPopup({ action: "criticalError", message: `Erro inesperado: ${e.message}` });
     }
+    // Retornar true para operações assíncronas é tratado dentro do 'if' para capturePage.
+    return true;
 });
 
 async function generateManualWithProgress() {
