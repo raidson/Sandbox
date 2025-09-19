@@ -13,6 +13,7 @@ from urllib.parse import urljoin
 import os
 import sys
 import concurrent.futures # Biblioteca para concorrência
+import argparse
 
 # Tenta importar a biblioteca Pygments, se não existir, instala
 try:
@@ -31,29 +32,26 @@ except ImportError:
 # ||                              CONFIGURAÇÃO PRINCIPAL                            ||
 # ====================================================================================
 CONFIG = {
-    # 1. URL PRINCIPAL: Usada no modo automático para encontrar os links.
-    "base_url": "https://oobj.com.br/bc/",
-
-    # 2. SELETOR DE LINKS: Usado no modo automático.
-    "article_links_selector": 'a[href*="/bc/"]',
-
-    # 3. SELETOR DE TÍTULO: Dentro da página de um artigo.
-    "title_selector": 'article.conteudo h1, h1.entry-title, h1',
-
-    # 4. SELETOR DE CONTEÚDO: O container do conteúdo do artigo.
-    "content_selector": 'article.conteudo, div.kb-article-content, div.entry-content',
-
-    # 5. NOME DO ARQUIVO FINAL:
     "output_filename": "manual_completo_gerado.html",
-
-    # 6. MODO DE OPERAÇÃO:
-    #    - Para MODO MANUAL: Cole as URLs aqui.
-    #    - Para MODO AUTOMÁTICO: Deixe a lista VAZIA -> []
-    "link_list_override": [],
-
-    # 7. OTIMIZAÇÃO: Número de "ajudantes" (threads) para baixar páginas simultaneamente.
-    #    Comece com 10. Aumente para 20 ou 30 se sua conexão for boa. Não exagere.
-    "MAX_WORKERS": 10
+    "MAX_WORKERS": 10,
+    "SOURCES": [
+        {
+            "name": "Oobj BC",
+            "base_url": "https://oobj.com.br/bc/",
+            "domain_match": "oobj.com.br",
+            "article_links_selector": 'a[href*="/bc/"]',
+            "title_selector": 'article.conteudo h1, h1.entry-title, h1',
+            "content_selector": 'article.conteudo, div.kb-article-content, div.entry-content',
+        },
+        {
+            "name": "Wikipedia",
+            "base_url": "https://pt.wikipedia.org/",
+            "domain_match": "wikipedia.org",
+            "article_links_selector": None, # Não aplicável para processamento direto de URLs
+            "title_selector": 'h1#firstHeading',
+            "content_selector": 'div#mw-content-text .mw-parser-output',
+        }
+    ]
 }
 # ====================================================================================
 # ||                           FIM DA CONFIGURAÇÃO PRINCIPAL                          ||
@@ -98,19 +96,19 @@ def process_html_content(base_url, content_element):
         pre_tag.replace_with(BeautifulSoup(highlighted_code, 'html.parser'))
     return str(content_element)
 
-def extract_article_details(session, article_url):
-    """Extrai o título e o conteúdo HTML de uma página."""
+def extract_article_details(session, article_url, source_config):
+    """Extrai o título e o conteúdo HTML de uma página usando uma configuração de fonte específica."""
     if "#" in article_url.split('/')[-1]: return None
-    print(f"  -> Processando: {article_url}")
+    print(f"  -> Processando [{source_config['name']}]: {article_url}")
     soup = get_soup(session, article_url)
     if not soup: return None
-    title_element = soup.select_one(CONFIG['title_selector'])
+    title_element = soup.select_one(source_config['title_selector'])
     if not title_element:
         print(f"    -> Título não encontrado, pulando página (provavelmente uma categoria).")
         return None
     title = title_element.get_text(strip=True)
-    content_element = soup.select_one(CONFIG['content_selector'])
-    html_content = process_html_content(article_url, content_element)
+    content_element = soup.select_one(source_config['content_selector'])
+    html_content = process_html_content(source_config['base_url'], content_element)
     if not html_content.strip(): html_content = "<p>Conteúdo não encontrado ou vazio.</p>"
     return (title, html_content)
 
@@ -158,38 +156,77 @@ def create_html_manual(articles_data, filename):
 
 # Lógica principal de execução
 if __name__ == "__main__":
-    lista_de_links_extraidos = []
+    parser = argparse.ArgumentParser(
+        description="Gera um manual HTML a partir de URLs específicas ou escaneando um site.",
+        epilog="Exemplos:\n"
+               "  python gerador_manual.py https://.../artigo1\n"
+               "  python gerador_manual.py --scan https://.../ --limit 50"
+    )
+    parser.add_argument('urls', metavar='URL', type=str, nargs='*',
+                        help='URLs para extrair o conteúdo diretamente.')
+    parser.add_argument('--scan', metavar='URL_RAIZ', type=str,
+                       help='URL raiz para iniciar a varredura automática de links.')
+    parser.add_argument('--limit', metavar='N', type=int, default=50,
+                        help='Número máximo de páginas a serem capturadas no modo de varredura (padrão: 50).')
 
-    if CONFIG['link_list_override']:
-        print("ℹ️ MODO MANUAL: Usando a lista de links fornecida.")
-        lista_de_links_extraidos = CONFIG['link_list_override']
+    args = parser.parse_args()
+
+    def get_source_config_for_url(url):
+        for source in CONFIG['SOURCES']:
+            if source['domain_match'] in url:
+                return source
+        return None
+
+    lista_de_links_para_processar = []
+
+    if args.urls:
+        print("ℹ️ MODO MANUAL: Usando URLs fornecidas via linha de comando.")
+        lista_de_links_para_processar = args.urls
+    elif args.scan:
+        print(f"🚀 MODO DE VARREDURA: Iniciando extração de links de: {args.scan}")
+        scan_source_config = get_source_config_for_url(args.scan)
+        if not scan_source_config or not scan_source_config.get('article_links_selector'):
+            print(f"   ❌ O modo de varredura não é suportado para a URL fornecida (fonte não encontrada ou sem 'article_links_selector').")
+        else:
+            with requests.Session() as session:
+                session.headers.update(HTTP_HEADERS)
+                main_soup = get_soup(session, args.scan)
+                if main_soup:
+                    links = main_soup.select(scan_source_config['article_links_selector'])
+                    if links:
+                        unique_urls = set()
+                        for link_element in links:
+                            link_url = link_element.get('href')
+                            if link_url and '#' not in link_url:
+                                full_url = urljoin(scan_source_config['base_url'], link_url)
+                                # Simple filter to stay on the same domain
+                                if scan_source_config['domain_match'] in full_url:
+                                    unique_urls.add(full_url)
+
+                        lista_de_links_para_processar = sorted(list(unique_urls))[:args.limit]
+                        print(f"   ✅ {len(links)} links encontrados. Processando os primeiros {len(lista_de_links_para_processar)} (limite: {args.limit}).")
+                    else:
+                        print(f"\n❌ Nenhum link de artigo encontrado com o seletor '{scan_source_config['article_links_selector']}'.")
     else:
-        print(f"🚀 MODO AUTOMÁTICO: Iniciando a extração de links de: {CONFIG['base_url']}")
-        with requests.Session() as session:
-            session.headers.update(HTTP_HEADERS)
-            main_soup = get_soup(session, CONFIG['base_url'])
-            if main_soup:
-                links = main_soup.select(CONFIG['article_links_selector'])
-                if links:
-                    unique_urls = set()
-                    for link_element in links:
-                        link_url = link_element.get('href')
-                        if link_url and '#' not in link_url and '/cat/' not in link_url:
-                            full_url = urljoin(CONFIG['base_url'], link_url)
-                            unique_urls.add(full_url)
-                    lista_de_links_extraidos = sorted(list(unique_urls))
-                else: print(f"\n❌ Nenhum link de artigo encontrado com o seletor '{CONFIG['article_links_selector']}'.")
+        # Modo automático legado
+        print("Nenhuma URL ou opção --scan fornecida. Use --help para mais informações.")
 
-    if lista_de_links_extraidos:
-        print(f"✅ Total de {len(lista_de_links_extraidos)} URLs para processar com até {CONFIG['MAX_WORKERS']} 'ajudantes'.")
+    if lista_de_links_para_processar:
+        print(f"✅ Total de {len(lista_de_links_para_processar)} URLs para processar com até {CONFIG['MAX_WORKERS']} 'ajudantes'.")
 
         extracted_articles = []
         with requests.Session() as session:
             session.headers.update(HTTP_HEADERS)
-            # A mágica da concorrência acontece aqui
             with concurrent.futures.ThreadPoolExecutor(max_workers=CONFIG['MAX_WORKERS']) as executor:
-                # Mapeia a função de extração para cada URL, distribuindo o trabalho
-                future_to_url = {executor.submit(extract_article_details, session, url): url for url in lista_de_links_extraidos}
+                future_to_url = {}
+                for url in lista_de_links_para_processar:
+                    source_config = get_source_config_for_url(url)
+                    if source_config:
+                        future = executor.submit(extract_article_details, session, url, source_config)
+                        future_to_url[future] = url
+                    else:
+                        print(f"  [AVISO] Nenhuma fonte de configuração encontrada para a URL: {url}")
+
                 for future in concurrent.futures.as_completed(future_to_url):
                     result = future.result()
                     if result:
@@ -198,5 +235,7 @@ if __name__ == "__main__":
         if extracted_articles:
             extracted_articles.sort(key=lambda x: x[0])
             create_html_manual(extracted_articles, CONFIG['output_filename'])
-        else: print("\n❌ Nenhum dado de artigo válido foi extraído.")
-    else: print("\n❌ Nenhum link foi encontrado ou fornecido.")
+        else:
+            print("\n❌ Nenhum dado de artigo válido foi extraído.")
+    elif not args.scan: # Only show this if not in scan mode which has its own messages
+        print("\n❌ Nenhum link foi encontrado ou fornecido. Use --help para ver as opções.")
