@@ -24,13 +24,8 @@ function processHtmlContent(contentElement, baseUrl) {
         }
     });
 
-    // Simplificação: por enquanto, não faremos syntax highlighting.
-    // Apenas extraímos o texto dos blocos <pre>.
-    contentElement.querySelectorAll('pre').forEach(pre => {
-        const codeText = pre.innerText;
-        pre.textContent = codeText; // Substitui o conteúdo do <pre> pelo texto puro.
-    });
-
+    // A remoção da simplificação de <pre> significa que o conteúdo do código
+    // será agora passado como está, permitindo o highlighting no passo final.
     return contentElement.innerHTML;
 }
 
