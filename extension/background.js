@@ -275,7 +275,7 @@ function getHtmlHeader(articlesData) {
         .codehilite .il { color: #666 }
     `;
 
-    const htmlStyle = \`
+    const htmlStyle = `
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: #f8f9fa; color: #212529; }
         .container { max-width: 960px; margin: 20px auto; padding: 30px; background-color: #fff; border: 1px solid #dee2e6; border-radius: 8px; }
