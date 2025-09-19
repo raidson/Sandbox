@@ -90,3 +90,16 @@ CONFIG = {
     -   `content_selector`: Seletor CSS para o bloco de conteúdo principal do artigo.
 
 Você pode adicionar novas fontes à lista `SOURCES` para expandir a capacidade do script.
+
+## Instalando a Extensão no Navegador
+
+Além do script, este repositório contém uma extensão para navegador que facilita a captura de conteúdo diretamente da página que você está visitando.
+
+Siga os passos abaixo para instalar a extensão em um navegador como Google Chrome, Microsoft Edge ou outro baseado em Chromium:
+
+1.  **Abra a página de extensões** do seu navegador. Você pode fazer isso digitando `chrome://extensions` (para o Chrome) ou `edge://extensions` (para o Edge) na barra de endereço.
+2.  **Ative o "Modo de Desenvolvedor"**. Geralmente, há um interruptor no canto superior direito da página de extensões.
+3.  **Carregue a extensão**. Clique no botão **"Carregar sem compactação"** (ou "Load unpacked").
+4.  **Selecione a pasta da extensão**. Na janela que abrir, navegue até o diretório deste projeto e selecione a pasta `extension`.
+
+A extensão deverá aparecer na sua lista de extensões instaladas e pronta para uso.
