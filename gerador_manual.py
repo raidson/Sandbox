@@ -50,6 +50,14 @@ CONFIG = {
             "article_links_selector": None, # Não aplicável para processamento direto de URLs
             "title_selector": 'h1#firstHeading',
             "content_selector": 'div#mw-content-text .mw-parser-output',
+        },
+        {
+            "name": "Stardew Valley Wiki",
+            "base_url": "https://stardewvalleywiki.com/",
+            "domain_match": "stardewvalleywiki.com",
+            "article_links_selector": None, # Não aplicável para processamento direto de URLs
+            "title_selector": 'h1#firstHeading',
+            "content_selector": 'div#mw-content-text .mw-parser-output',
         }
     ]
 }
